@@ -1,6 +1,4 @@
 extends Node
-## Global signals so UI, companions, and world scripts stay decoupled.
-
 signal dialogue_requested(speaker: String, lines: Array, choices: Array)
 signal dialogue_finished(choice_id: String)
 signal toast(message: String)
