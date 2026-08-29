@@ -1,0 +1,116 @@
+[gd_scene load_steps=7 format=3 uid="uid://childhood01"]
+
+[ext_resource type="Script" path="res://scripts/world/childhood.gd" id="1_ch"]
+[ext_resource type="PackedScene" path="res://scenes/characters/Player.tscn" id="2_pl"]
+[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="3_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="4_touch"]
+[ext_resource type="Script" path="res://scripts/camera/camera_2d_director.gd" id="5_cam"]
+[ext_resource type="Script" path="res://scripts/world/interactable.gd" id="6_int"]
+
+[sub_resource type="CircleShape2D" id="spot"]
+radius = 40.0
+
+[node name="Childhood" type="Node2D"]
+script = ExtResource("1_ch")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="Sky" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.12, 0.06)
+
+[node name="Plate" type="ColorRect" parent="ParallaxBackground/Sky"]
+offset_left = -160.0
+offset_top = -120.0
+offset_right = 1100.0
+offset_bottom = 280.0
+color = Color(0.72, 0.82, 0.90, 1)
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Grass" type="ColorRect" parent="World"]
+offset_left = -40.0
+offset_top = 160.0
+offset_right = 980.0
+offset_bottom = 720.0
+color = Color(0.42, 0.58, 0.36, 1)
+
+[node name="House" type="ColorRect" parent="World"]
+offset_left = 40.0
+offset_top = 200.0
+offset_right = 280.0
+offset_bottom = 400.0
+color = Color(0.55, 0.38, 0.26, 1)
+
+[node name="MotherSprite" type="ColorRect" parent="World"]
+offset_left = 210.0
+offset_top = 330.0
+offset_right = 236.0
+offset_bottom = 388.0
+color = Color(0.62, 0.36, 0.40, 1)
+
+[node name="CreekPlate" type="ColorRect" parent="World"]
+offset_left = 620.0
+offset_top = 480.0
+offset_right = 900.0
+offset_bottom = 560.0
+color = Color(0.28, 0.48, 0.62, 1)
+
+[node name="Hotspots" type="Node2D" parent="World"]
+
+[node name="Mother" type="Area2D" parent="World/Hotspots"]
+position = Vector2(224, 360)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("6_int")
+interact_id = "mother"
+prompt = "Talk to Mother"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Hotspots/Mother"]
+shape = SubResource("spot")
+
+[node name="Creek" type="Area2D" parent="World/Hotspots"]
+position = Vector2(760, 520)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("6_int")
+interact_id = "creek"
+prompt = "Look at the creek"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Hotspots/Creek"]
+shape = SubResource("spot")
+
+[node name="Box" type="Area2D" parent="World/Hotspots"]
+position = Vector2(90, 280)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("6_int")
+interact_id = "box"
+prompt = "The floorboard she told you not to lift"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Hotspots/Box"]
+shape = SubResource("spot")
+
+[node name="Road" type="Area2D" parent="World/Hotspots"]
+position = Vector2(860, 240)
+collision_layer = 16
+collision_mask = 1
+script = ExtResource("6_int")
+interact_id = "road"
+prompt = "Look down the road"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Hotspots/Road"]
+shape = SubResource("spot")
+
+[node name="Entities" type="Node2D" parent="."]
+
+[node name="Player" parent="Entities" instance=ExtResource("2_pl")]
+position = Vector2(320, 380)
+
+[node name="CameraDirector" type="Camera2D" parent="."]
+script = ExtResource("5_cam")
+position_smoothing_enabled = true
+zoom = Vector2(1.28, 1.28)
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]
+
+[node name="TouchControls" parent="." instance=ExtResource("4_touch")]
