@@ -72,8 +72,11 @@ func _interact() -> void:
 func _use(id: String) -> void:
 	match id:
 		"mother":
+			_seen["mother"] = true
 			camera.set_mode(Camera2DDirector.Mode.ROMANCE)
-			if Campaign.chapter_id == "pro2_truth" or (_seen.get("box", false) and _seen.get("creek", false)):
+			if _ready_to_leave():
+				_say(_leave_pack())
+			elif Campaign.chapter_id == "pro2_truth" or (_seen.get("box", false) and _seen.get("creek", false)):
 				Campaign.set_chapter("pro2_truth")
 				_say(Prologue.discovery(GameState.player_name))
 			else:
@@ -82,13 +85,18 @@ func _use(id: String) -> void:
 			_seen["creek"] = true
 			Campaign.set_chapter("pro1_signs")
 			_say(Prologue.creek())
+			_nudge_leave()
 		"box":
 			_seen["box"] = true
 			Campaign.set_chapter("pro1_signs")
 			_say(Prologue.box())
+			_nudge_leave()
 		"road":
 			_seen["road"] = true
-			_say(Prologue.watchers())
+			if _ready_to_leave():
+				_say(_leave_pack())
+			else:
+				_say(Prologue.watchers())
 
 func _say(pack: Dictionary) -> void:
 	EventBus.dialogue_requested.emit(pack["speaker"], pack["lines"], pack["choices"])
@@ -125,7 +133,23 @@ func _on_choice(choice_id: String) -> void:
 			GameState.location = "courtyard"
 			get_tree().change_scene_to_file("res://scenes/world/Academy.tscn")
 
+func _ready_to_leave() -> bool:
+	return bool(_seen.get("mother") and _seen.get("creek") and _seen.get("box") and _seen.get("road"))
+
+func _nudge_leave() -> void:
+	if _ready_to_leave():
+		Campaign.set_objective("Talk to Mother or the road. Let the years pass.")
+		EventBus.toast.emit("The yard is finished. Talk to Mother or the road.")
+
+func _leave_pack() -> Dictionary:
+	return {
+		"speaker": "The Years",
+		"lines": ["You have seen the house, the creek, the box, and the road.", "The night they find you can play out. Or the years can close."],
+		"choices": [{"id": "pro_night", "text": "Stay for that night."}, {"id": "pro_skip", "text": "Let the years pass."}],
+	}
+
 func _maybe_truth() -> void:
 	if _seen.get("creek") and _seen.get("box"):
 		Campaign.set_chapter("pro2_truth")
 		Campaign.set_objective("Go back to your mother.")
+	_nudge_leave()
