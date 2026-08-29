@@ -33,16 +33,14 @@ func _ready() -> void:
 	EventBus.combat_ended.connect(_on_combat_ended)
 	if PactSystem.is_pacted("kitsune"):
 		_spawn_akari()
-	EventBus.toast.emit("Illustrious Academy. The circle first.")
+	EventBus.toast.emit("The woods are west. That is where you call.")
 	_objective()
 
 func _objective() -> void:
 	if PactSystem.is_pacted("kitsune"):
 		Campaign.set_objective("She answered in the trees. The ring is east when you mean it.")
-	elif GameState.has_flag("exam_failed"):
-		Campaign.set_objective("Get out of their sight. The woods are west.")
 	else:
-		Campaign.set_objective("Step into the examination circle.")
+		Campaign.set_objective("Call in the wilderness. Not in their circle.")
 
 func _spots() -> void:
 	_make_spot("circle", "Examination Circle", "Step in.", Vector2(480, 420))
@@ -80,17 +78,12 @@ func _interact() -> void:
 		return
 	match _near[_near.size() - 1].interact_id:
 		"circle":
-			if GameState.has_flag("exam_failed"):
-				EventBus.toast.emit("They already wrote insufficient.")
-			else:
-				_say(FirstSummon.circle_open(GameState.player_name))
+			EventBus.toast.emit("That slate is not where you call. The woods are.")
 		"woods":
 			if PactSystem.is_pacted("kitsune"):
 				_say({"speaker": "Akari", "lines": ["\"You already almost died. The sand is that way if you insist on repeating it.\""], "choices": []})
-			elif GameState.has_flag("exam_failed"):
-				_say(FirstSummon.woods_alone())
 			else:
-				EventBus.toast.emit("The proctor is still waiting on the circle.")
+				_say(FirstSummon.woods_call(GameState.player_name))
 		"ring":
 			if not PactSystem.is_pacted("kitsune"):
 				EventBus.toast.emit("You have no pact.")
@@ -102,12 +95,8 @@ func _say(pack: Dictionary) -> void:
 
 func _on_choice(choice_id: String) -> void:
 	match choice_id:
-		"ex_try":
-			GameState.set_flag("exam_failed")
-			_say(FirstSummon.circle_fail())
-			_objective()
-		"ex_leave":
-			EventBus.toast.emit("Do not train harder. Leave.")
+		"wd_call":
+			_say(FirstSummon.woods_fail())
 		"wd_stay":
 			_begin_ambush()
 		"sm_done":
