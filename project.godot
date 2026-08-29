@@ -1,5 +1,5 @@
 ; Engine configuration file.
-; Compatible with Godot 4.3+ and Xogot (Godot 4.4–4.6 on iPhone/iPad).
+; Xogot iPhone target: Godot 4.6.
 config_version=5
 
 [application]
@@ -7,7 +7,7 @@ config/name="Bloodbound Summoner"
 config/description="Illustrated 2.5D. Landscape mobile. Player brick."
 config/version="0.3.0"
 run/main_scene="res://scenes/boot/Boot.tscn"
-config/features=PackedStringArray("4.3", "Mobile")
+config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
