@@ -1,15 +1,12 @@
 # First summon — locked beat
 
 Summoning is a RITUAL.
-The rite requires a drop of blood from the summoner.
-Do not invent the rest of the rite (chalk, words, tools) until the story names them.
+Required, locked:
+- He draws a summoning circle.
+- He gives a drop of his own blood.
 
-Ash performs it in the wilderness, alone.
-He gives the drop. Nothing answers. He believes the ritual failed. He walks away.
-A low-level monster starts its strike.
-Before the blow lands, Akari destroys it.
+Do not invent extra tools, words, or runes until the story names them.
 
-He does not fight. He does not take the hit.
-The drop was not empty in the way he thought. He does not know that yet.
-
-The academy circle is not this meeting.
+Wilderness. Circle. Drop. Nothing answers. He walks away.
+Monster starts the strike. Akari destroys it before impact.
+He thinks the rite failed. She knows something happened.
