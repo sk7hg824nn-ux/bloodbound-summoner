@@ -1,12 +1,12 @@
 # First summon — locked beat
 
-Summoning is a RITUAL.
-Required, locked:
-- He draws a summoning circle.
-- He gives a drop of his own blood.
+Ash is timid.
 
-Do not invent extra tools, words, or runes until the story names them.
+1. Academy. Official summoning in front of everyone. The rite fails. Humiliation. Outskirts joke confirmed.
+2. A week later. He tries again in the woods, alone.
+   Ritual: draw a summoning circle. Give a drop of his blood.
+   Nothing answers. He believes it failed. He walks away.
+3. A low-level monster starts its strike.
+4. Before the blow lands, Akari destroys it.
 
-Wilderness. Circle. Drop. Nothing answers. He walks away.
-Monster starts the strike. Akari destroys it before impact.
-He thinks the rite failed. She knows something happened.
+He does not fight. He thinks both rites failed. She knows something happened.
