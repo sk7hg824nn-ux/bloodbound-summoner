@@ -1,3 +1,125 @@
 extends Node2D
 class_name Figure2D
-## Illustrated stand-in layers. Swap for painted PNGs later. Same node names.
+## Illustrated stand-in. Same node names when painted art arrives.
+
+var kind: String = "human"
+var body_color: Color = Color(0.4, 0.5, 0.8)
+var skin := Color(0.93, 0.80, 0.70)
+var hair := Color(0.18, 0.14, 0.16)
+var shadow: Polygon2D
+var coat: Polygon2D
+var arm: Polygon2D
+var head: Polygon2D
+var hair_back: Polygon2D
+var hair_front: Polygon2D
+var eye_l: Polygon2D
+var eye_r: Polygon2D
+var _bob: float = 0.0
+var walking: bool = false
+var gait: String = "idle"
+var facing_x: float = 1.0
+var look_scale: float = 1.0
+
+static func attach(host: Node2D, kind: String, color: Color) -> Figure2D:
+	var existing := host.get_node_or_null("Figure") as Figure2D
+	if existing:
+		existing.kind = kind
+		existing.body_color = color
+		existing._paint()
+		return existing
+	var fig := Figure2D.new()
+	fig.name = "Figure"
+	fig.kind = kind
+	fig.body_color = color
+	host.add_child(fig)
+	fig.z_index = 2
+	fig._build()
+	return fig
+
+func _build() -> void:
+	shadow = _poly("Shadow", Color(0, 0, 0, 0.28), PackedVector2Array([Vector2(-16, 16), Vector2(16, 16), Vector2(11, 20), Vector2(-11, 20)]))
+	shadow.z_index = -2
+	hair_back = _poly("HairBack", hair, PackedVector2Array([Vector2(-11, -18), Vector2(-13, -30), Vector2(0, -36), Vector2(13, -30), Vector2(11, -18)]))
+	coat = _poly("Body", body_color, PackedVector2Array([Vector2(-12, 16), Vector2(-13, -4), Vector2(-8, -16), Vector2(8, -16), Vector2(13, -4), Vector2(12, 16)]))
+	var lining := _poly("Lining", body_color.lightened(0.18), PackedVector2Array([Vector2(-6, 14), Vector2(-5, -8), Vector2(5, -8), Vector2(6, 14)]))
+	lining.z_index = 1
+	arm = _poly("Arm", body_color.darkened(0.08), PackedVector2Array([Vector2(8, -8), Vector2(16, -4), Vector2(15, 8), Vector2(9, 6)]))
+	arm.z_index = 2
+	head = _poly("Head", skin, PackedVector2Array([Vector2(-8, -16), Vector2(-8, -30), Vector2(0, -34), Vector2(8, -30), Vector2(8, -16)]))
+	hair_front = _poly("HairFront", hair.lightened(0.06), PackedVector2Array([Vector2(-8, -26), Vector2(-10, -32), Vector2(0, -36), Vector2(10, -32), Vector2(8, -26), Vector2(3, -22), Vector2(-4, -24)]))
+	eye_l = _poly("EyeL", Color(0.12, 0.10, 0.12), PackedVector2Array([Vector2(-5, -24), Vector2(-5, -26), Vector2(-2, -26), Vector2(-2, -24)]))
+	eye_r = _poly("EyeR", Color(0.12, 0.10, 0.12), PackedVector2Array([Vector2(2, -24), Vector2(2, -26), Vector2(5, -26), Vector2(5, -24)]))
+	var shine := _poly("Shine", Color(1, 1, 1, 0.18), PackedVector2Array([Vector2(-6, -28), Vector2(-2, -32), Vector2(2, -28)]))
+	shine.z_index = 4
+	_paint()
+
+func _poly(n: String, color: Color, pts: PackedVector2Array) -> Polygon2D:
+	var p := Polygon2D.new()
+	p.name = n
+	p.color = color
+	p.polygon = pts
+	add_child(p)
+	return p
+
+func _paint() -> void:
+	if coat:
+		coat.color = body_color
+	if hair_back:
+		hair_back.color = hair
+	if hair_front:
+		hair_front.color = hair.lightened(0.08)
+	if head:
+		head.color = skin
+
+func apply_look(era: String) -> void:
+	if era == "child":
+		look_scale = 0.84
+		if head:
+			head.scale = Vector2(1.18, 1.18)
+			head.position = Vector2(0, 2)
+		if coat:
+			coat.color = Color(0.72, 0.42, 0.38) if body_color.r > 0.5 else Color(0.38, 0.52, 0.46)
+	else:
+		look_scale = 1.0
+		if head:
+			head.scale = Vector2.ONE
+			head.position = Vector2.ZERO
+		if coat:
+			coat.color = body_color
+	scale = Vector2(facing_x * look_scale, look_scale)
+
+func set_facing(dir: Vector2) -> void:
+	if abs(dir.x) > 0.12:
+		facing_x = -1.0 if dir.x < 0.0 else 1.0
+		scale = Vector2(facing_x * look_scale, look_scale)
+
+func tick(delta: float) -> void:
+	if gait == "run" or (walking and gait != "idle"):
+		if gait != "run":
+			gait = "walk"
+	elif not walking:
+		gait = "idle"
+	var speed := 3.0
+	var amp := 0.7
+	var arm_amp := 0.05
+	match gait:
+		"walk":
+			speed = 10.0; amp = 2.2; arm_amp = 0.35
+		"run":
+			speed = 16.0; amp = 3.4; arm_amp = 0.55
+	_bob += delta * speed
+	position.y = sin(_bob) * amp
+	if arm:
+		arm.rotation = sin(_bob) * arm_amp
+
+func swing() -> void:
+	if arm == null:
+		return
+	var tw := create_tween()
+	tw.tween_property(arm, "rotation", facing_x * 0.9, 0.06)
+	tw.tween_property(arm, "rotation", 0.0, 0.14)
+
+func dodge_smear() -> void:
+	var tw := create_tween()
+	tw.tween_property(self, "modulate", Color(0.7, 0.85, 1.2, 0.7), 0.04)
+	tw.tween_property(self, "modulate", Color.WHITE, 0.16)

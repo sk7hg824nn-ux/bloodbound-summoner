@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://player0001"]
+
+[ext_resource type="Script" path="res://scripts/characters/player.gd" id="1_pl"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p"]
+radius = 12.0
+height = 36.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 1
+collision_mask = 2
+script = ExtResource("1_pl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_p")
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -40.0
+offset_top = -46.0
+offset_right = 40.0
+offset_bottom = -28.0
+theme_override_font_sizes/font_size = 11
+text = "You"
+horizontal_alignment = 1
