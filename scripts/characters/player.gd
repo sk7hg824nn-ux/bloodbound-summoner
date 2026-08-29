@@ -7,7 +7,6 @@ signal ability_used
 signal interact_pressed
 
 var joystick_dir: Vector2 = Vector2.ZERO
-var attack_cooldown: float = 0.0
 var dodge_cooldown: float = 0.0
 var dodge_time: float = 0.0
 var dodge_dir: Vector2 = Vector2.RIGHT
@@ -35,10 +34,12 @@ func _ready() -> void:
 		old_cam.enabled = false
 
 func _physics_process(_delta: float) -> void:
-	if GameState.in_dialogue:
+	if GameState.in_dialogue and joystick_dir.length() <= 0.2:
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
+	if GameState.in_dialogue and joystick_dir.length() > 0.2:
+		GameState.in_dialogue = false
 	if dodge_time > 0.0:
 		dodge_time -= _delta
 		velocity = dodge_dir * DODGE_SPEED
@@ -67,7 +68,7 @@ func apply_look(era: String) -> void:
 		figure.apply_look(era)
 
 func try_dodge() -> bool:
-	if dodge_cooldown > 0.0 or GameState.in_dialogue:
+	if dodge_cooldown > 0.0:
 		return false
 	dodge_cooldown = DODGE_CD
 	dodge_time = DODGE_DURATION

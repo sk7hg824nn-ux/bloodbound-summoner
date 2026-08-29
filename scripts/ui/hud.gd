@@ -26,6 +26,8 @@ func _ready() -> void:
 	refresh()
 
 func _process(delta: float) -> void:
+	if dialogue and not dialogue.visible and GameState.in_dialogue:
+		GameState.in_dialogue = false
 	if _toast_time > 0.0:
 		_toast_time -= delta
 		if _toast_time <= 0.0:
