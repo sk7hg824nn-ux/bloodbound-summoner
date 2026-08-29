@@ -16,6 +16,7 @@ func _ready() -> void:
 	touch.set_kit("child")
 	camera.set_target(player)
 	camera.set_mode(Camera2DDirector.Mode.EXPLORE)
+	_fence_yard()
 	touch.joystick_moved.connect(player.set_joystick)
 	touch.attack_pressed.connect(func(): EventBus.toast.emit("Not here. Not yet."))
 	touch.dodge_pressed.connect(func(): player.try_dodge())
@@ -29,6 +30,28 @@ func _ready() -> void:
 			node.body_exited.connect(_on_exit.bind(node))
 	Campaign.set_chapter("pro0_home")
 	_say(Prologue.morning(GameState.player_name))
+
+func _fence_yard() -> void:
+	var yard := Rect2(-20, 160, 1000, 560)
+	camera.set_bounds(yard)
+	var wall := StaticBody2D.new()
+	wall.collision_layer = 2
+	wall.collision_mask = 0
+	$World.add_child(wall)
+	var thick := 40.0
+	var boxes: Array[Rect2] = [
+		Rect2(yard.position.x - thick, yard.position.y - thick, yard.size.x + thick * 2.0, thick),
+		Rect2(yard.position.x - thick, yard.end.y, yard.size.x + thick * 2.0, thick),
+		Rect2(yard.position.x - thick, yard.position.y, thick, yard.size.y),
+		Rect2(yard.end.x, yard.position.y, thick, yard.size.y),
+	]
+	for box in boxes:
+		var shape := CollisionShape2D.new()
+		var rect := RectangleShape2D.new()
+		rect.size = box.size
+		shape.shape = rect
+		shape.position = box.get_center()
+		wall.add_child(shape)
 
 func _on_enter(body: Node, spot: Interactable) -> void:
 	if body == player and spot not in _near:

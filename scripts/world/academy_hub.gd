@@ -1,5 +1,4 @@
 extends Node2D
-## Player-brick academy. Same Player class. No combat. No companions.
 
 @onready var player: Player = $Entities/Player
 @onready var touch: TouchControls = $TouchControls
@@ -14,6 +13,7 @@ func _ready() -> void:
 	touch.set_kit("academy")
 	camera.set_target(player)
 	camera.set_mode(Camera2DDirector.Mode.EXPLORE)
+	camera.set_bounds(Rect2(-20, 160, 1220, 580))
 	touch.joystick_moved.connect(player.set_joystick)
 	touch.interact_pressed.connect(_talk)
 	player.interact_pressed.connect(_talk)
