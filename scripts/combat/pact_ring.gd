@@ -31,7 +31,7 @@ func call_lie() -> void:
 		return
 	akari.leave_lie()
 	akari.sidestep(player.global_position)
-	EventBus.toast.emit("A still fox stays. She is already gone.")
+	EventBus.toast.emit("Afterimage. She stepped.")
 
 func commit() -> void:
 	if not PactSystem.is_pacted("kitsune"):
@@ -45,11 +45,13 @@ func commit() -> void:
 		akari.clear_lie()
 		if akari.figure:
 			akari.figure.swing()
-		EventBus.toast.emit("The lie ate the lunge. She cuts.")
+		EventBus.toast.emit("The lie ate the lunge. Fox Cut.")
 		_check_end()
 		return
-	wolf.take_hit(1)
-	EventBus.toast.emit("She clicks her tongue. That wasn't a trick.")
+	wolf.take_hit(3)
+	if akari.figure:
+		akari.figure.swing()
+	EventBus.toast.emit("Fox Cut. Modest. E-rank.")
 	_check_end()
 
 func _on_lunge(target: Node2D) -> void:
@@ -67,7 +69,7 @@ func _on_lunge(target: Node2D) -> void:
 	if target == player:
 		GameState.take_damage(4)
 		player.sync_hp_from_state()
-		EventBus.toast.emit("The wolf should not be on you.")
+		EventBus.toast.emit("Stand was the wrong square.")
 		_check_end()
 
 func _check_end() -> void:
