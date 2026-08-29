@@ -1,0 +1,87 @@
+[gd_scene load_steps=3 format=3 uid="uid://touch00001"]
+
+[ext_resource type="Script" path="res://scripts/ui/touch_controls.gd" id="1_tc"]
+[ext_resource type="Script" path="res://scripts/ui/virtual_joystick.gd" id="2_joy"]
+
+[node name="TouchControls" type="CanvasLayer"]
+layer = 12
+script = ExtResource("1_tc")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Joystick" type="Control" parent="Root"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -176.0
+offset_right = 176.0
+offset_bottom = -16.0
+script = ExtResource("2_joy")
+
+[node name="Base" type="Panel" parent="Root/Joystick"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 144.0
+offset_bottom = 144.0
+modulate = Color(1, 1, 1, 0.45)
+
+[node name="Knob" type="Panel" parent="Root/Joystick/Base"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 88.0
+offset_bottom = 88.0
+modulate = Color(1, 1, 1, 0.8)
+
+[node name="Buttons" type="Control" parent="Root"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -176.0
+offset_right = -12.0
+offset_bottom = -12.0
+mouse_filter = 2
+
+[node name="Attack" type="Button" parent="Root/Buttons"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 56.0
+offset_right = 184.0
+offset_bottom = 144.0
+text = "ATK"
+
+[node name="Dodge" type="Button" parent="Root/Buttons"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 88.0
+offset_right = 88.0
+offset_bottom = 152.0
+text = "DODGE"
+
+[node name="Ability" type="Button" parent="Root/Buttons"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 0.0
+offset_right = 184.0
+offset_bottom = 52.0
+text = "PACT"
+
+[node name="Interact" type="Button" parent="Root/Buttons"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 88.0
+offset_bottom = 60.0
+text = "TALK"
