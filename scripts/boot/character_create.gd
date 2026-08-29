@@ -7,7 +7,6 @@ extends Control
 
 var _sex: GameState.Sex = GameState.Sex.MALE
 
-
 func _ready() -> void:
 	male_btn.pressed.connect(func(): _set_sex(GameState.Sex.MALE))
 	female_btn.pressed.connect(func(): _set_sex(GameState.Sex.FEMALE))
@@ -15,11 +14,9 @@ func _ready() -> void:
 	name_edit.text = "Ash"
 	_refresh()
 
-
 func _set_sex(sex: GameState.Sex) -> void:
 	_sex = sex
 	_refresh()
-
 
 func _refresh() -> void:
 	male_btn.modulate = Color(1.2, 1.2, 1.2) if _sex == GameState.Sex.MALE else Color(0.7, 0.7, 0.75)
@@ -27,15 +24,10 @@ func _refresh() -> void:
 	var n := name_edit.text.strip_edges()
 	if n.is_empty():
 		n = "Ash"
-	preview.text = "%s  •  %s\nThe academy already thinks you cannot summon." % [
-		n,
-		"Male" if _sex == GameState.Sex.MALE else "Female",
-	]
-
+	preview.text = "%s  •  %s\nA small house. A mother who loves you." % [n, "Male" if _sex == GameState.Sex.MALE else "Female"]
 
 func _process(_delta: float) -> void:
 	_refresh()
-
 
 func _enter() -> void:
 	var n := name_edit.text.strip_edges()
@@ -44,5 +36,6 @@ func _enter() -> void:
 	PactSystem.bonds = {"kitsune": 0, "dragoness": 0, "bunny": 0}
 	Relationships.reset()
 	Campaign.reset()
+	Bricks.reset()
 	GameState.set_identity(n, _sex)
-	get_tree().change_scene_to_file("res://scenes/world/Academy.tscn")
+	get_tree().change_scene_to_file("res://scenes/world/Childhood.tscn")
