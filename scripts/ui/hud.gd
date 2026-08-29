@@ -63,6 +63,9 @@ func _render_line() -> void:
 		tap.pressed.connect(_advance)
 		choices_box.add_child(tap)
 	else:
+		if _choices.is_empty():
+			_finish("")
+			return
 		body_label.text = ""
 		for choice in _choices:
 			var b := Button.new()
