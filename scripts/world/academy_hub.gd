@@ -8,7 +8,9 @@ var _near: Array[Interactable] = []
 var akari: Akari
 var wolf: WolfSummon
 var ring: PactRing
+var ambush: WolfSummon
 var _in_ring := false
+var _in_ambush := false
 
 func _ready() -> void:
 	GameState.era = "academy"
@@ -31,15 +33,21 @@ func _ready() -> void:
 	EventBus.combat_ended.connect(_on_combat_ended)
 	if PactSystem.is_pacted("kitsune"):
 		_spawn_akari()
-	EventBus.toast.emit("Academy courtyard. Foxwood is west. The ring is east.")
+	EventBus.toast.emit("Illustrious Academy. The circle first.")
+	_objective()
+
+func _objective() -> void:
 	if PactSystem.is_pacted("kitsune"):
-		Campaign.set_objective("Take her to the beginner ring.")
+		Campaign.set_objective("She answered in the trees. The ring is east when you mean it.")
+	elif GameState.has_flag("exam_failed"):
+		Campaign.set_objective("Get out of their sight. The woods are west.")
 	else:
-		Campaign.set_objective("The circle was empty. Beg at Foxwood Gate.")
+		Campaign.set_objective("Step into the examination circle.")
 
 func _spots() -> void:
-	_make_spot("foxwood", "Foxwood Gate", "Ask the trees.", Vector2(80, 430))
-	_make_spot("ring", "Beginner Ring", "Step onto the sand.", Vector2(900, 470))
+	_make_spot("circle", "Examination Circle", "Step in.", Vector2(480, 420))
+	_make_spot("woods", "The Woods", "Leave their eyes.", Vector2(80, 430))
+	_make_spot("ring", "Beginner Ring", "Sand. Later.", Vector2(900, 470))
 
 func _make_spot(id: String, title: String, prompt: String, pos: Vector2) -> void:
 	var spot := Interactable.new()
@@ -48,9 +56,9 @@ func _make_spot(id: String, title: String, prompt: String, pos: Vector2) -> void
 	spot.prompt = prompt
 	spot.position = pos
 	var shape := CollisionShape2D.new()
-	var circle := CircleShape2D.new()
-	circle.radius = 42.0
-	shape.shape = circle
+	var circ := CircleShape2D.new()
+	circ.radius = 42.0
+	shape.shape = circ
 	spot.add_child(shape)
 	$World.add_child(spot)
 	spot.body_entered.connect(_on_enter.bind(spot))
@@ -66,16 +74,23 @@ func _on_exit(body: Node, spot: Interactable) -> void:
 		_near.erase(spot)
 
 func _interact() -> void:
-	if GameState.in_dialogue or _in_ring:
+	if GameState.in_dialogue or _in_ring or _in_ambush:
 		return
 	if _near.is_empty():
 		return
 	match _near[_near.size() - 1].interact_id:
-		"foxwood":
-			if PactSystem.is_pacted("kitsune"):
-				_say({"speaker": "Akari", "lines": ["\"You already spent your dignity. The ring is that way.\""], "choices": []})
+		"circle":
+			if GameState.has_flag("exam_failed"):
+				EventBus.toast.emit("They already wrote insufficient.")
 			else:
-				_say(Foxwood.arrive(GameState.player_name))
+				_say(FirstSummon.circle_open(GameState.player_name))
+		"woods":
+			if PactSystem.is_pacted("kitsune"):
+				_say({"speaker": "Akari", "lines": ["\"You already almost died. The sand is that way if you insist on repeating it.\""], "choices": []})
+			elif GameState.has_flag("exam_failed"):
+				_say(FirstSummon.woods_alone())
+			else:
+				EventBus.toast.emit("The proctor is still waiting on the circle.")
 		"ring":
 			if not PactSystem.is_pacted("kitsune"):
 				EventBus.toast.emit("You have no pact.")
@@ -87,26 +102,59 @@ func _say(pack: Dictionary) -> void:
 
 func _on_choice(choice_id: String) -> void:
 	match choice_id:
-		"fw_call":
-			_say(Foxwood.she_appears())
-		"fw_beg":
-			_say(Foxwood.beg_again())
-		"fw_beg2":
-			PactSystem.seal_akari()
-			_spawn_akari()
-			_say(Foxwood.seals())
-			Campaign.set_objective("Take her to the beginner ring.")
-		"fw_pride", "fw_empty":
-			pass
-		"fw_done":
-			EventBus.toast.emit("Registered: Akari. Rank E. One tail. She does not smile.")
+		"ex_try":
+			GameState.set_flag("exam_failed")
+			_say(FirstSummon.circle_fail())
+			_objective()
+		"ex_leave":
+			EventBus.toast.emit("Do not train harder. Leave.")
+		"wd_stay":
+			_begin_ambush()
+		"sm_done":
+			EventBus.toast.emit("She is not a pet. Something opened anyway.")
+			_objective()
+
+func _begin_ambush() -> void:
+	_in_ambush = true
+	camera.set_mode(Camera2DDirector.Mode.COMBAT)
+	ambush = WolfSummon.new()
+	ambush.display_name = "Whelp"
+	$Entities.add_child(ambush)
+	ambush.global_position = player.global_position + Vector2(90, -10)
+	if ambush.label:
+		ambush.label.text = "Whelp"
+	ambush.lunged.connect(_on_ambush_hit)
+	EventBus.toast.emit("You have no pact. You cannot win this.")
+	Campaign.set_objective("You are not a fighter. Survive long enough.")
+
+func _on_ambush_hit(target: Node2D) -> void:
+	if not _in_ambush:
+		return
+	if target == player:
+		GameState.take_damage(3)
+		player.sync_hp_from_state()
+		EventBus.toast.emit("You cannot win this.")
+		if GameState.hp <= max(8, GameState.max_hp - 6):
+			_resolve_arrival()
+
+func _resolve_arrival() -> void:
+	if not _in_ambush:
+		return
+	_in_ambush = false
+	if ambush and is_instance_valid(ambush):
+		ambush.queue_free()
+	ambush = null
+	PactSystem.seal_akari()
+	_spawn_akari()
+	camera.set_mode(Camera2DDirector.Mode.EXPLORE)
+	_say(FirstSummon.after_save())
 
 func _spawn_akari() -> void:
 	if akari and is_instance_valid(akari):
 		return
 	akari = Akari.new()
 	$Entities.add_child(akari)
-	akari.global_position = player.global_position + Vector2(-40, 8)
+	akari.global_position = player.global_position + Vector2(-36, 6)
 
 func _start_ring() -> void:
 	_in_ring = true
@@ -120,9 +168,12 @@ func _start_ring() -> void:
 	ring.bind(player, akari, wolf)
 	EventBus.combat_started.emit("beginner")
 	EventBus.toast.emit("Call the lie. Let it bite the statue. Then cut.")
-	Campaign.set_objective("PACT = lie. ATK = cut. Do not punch.")
+	Campaign.set_objective("PACT = lie. ATK = cut.")
 
 func _atk() -> void:
+	if _in_ambush:
+		EventBus.toast.emit("You have no pact.")
+		return
 	if ring and _in_ring:
 		ring.commit()
 	elif not PactSystem.has_any():
@@ -131,6 +182,9 @@ func _atk() -> void:
 		EventBus.toast.emit("The ring is east.")
 
 func _pact_btn() -> void:
+	if _in_ambush:
+		EventBus.toast.emit("You have no pact.")
+		return
 	if ring and _in_ring:
 		ring.call_lie()
 	elif not PactSystem.has_any():
@@ -154,11 +208,10 @@ func _on_combat_ended(win: bool) -> void:
 	if win:
 		GameState.set_flag("first_ring")
 		EventBus.toast.emit("The ledger writes a win. She yawns.")
-		Campaign.set_objective("You fought because she answered. Walk the courtyard.")
 	else:
 		GameState.hp = max(1, GameState.max_hp)
 		player.sync_hp_from_state()
-		EventBus.toast.emit("Down. She hauls you off the sand. Again when you mean it.")
+		EventBus.toast.emit("Down. She hauls you off the sand.")
 
 func _fence_yard() -> void:
 	var yard := _yard
@@ -189,3 +242,6 @@ func _physics_process(delta: float) -> void:
 		akari.follow(player, delta)
 	if ring and _in_ring:
 		ring.tick(delta)
+	if _in_ambush and ambush and is_instance_valid(ambush):
+		if ambush.lock == null and ambush.recover <= 0.0:
+			ambush.pick([player])
