@@ -1,36 +1,21 @@
 # First summon — locked beat
 
-Supersedes Foxwood-as-beg-then-wrist-seal as the meeting.
-Ash does not punch. Akari is not an obedient pet on arrival.
+Ash attempts his first summoning in the WILDERNESS, not in the examination circle.
 
-## The circle
-Academy summoning process. First attempt. Instructors see failure. Nothing they count as a summon. Humiliation. Outskirts boy, confirmed. He leaves.
+## The attempt
+Alone in the woods. He calls. Nothing he or anyone else would count as a summon. He takes that as proof he is ordinary and empty.
+Not "I'll train harder." Maybe there is nothing special about him.
 
-## The woods
-Alone. Not "I'll train harder." Maybe there is nothing special about him. Isolated, wrecked.
-A low-level monster attacks. He is not equipped. He is about to die.
+## The teeth
+A low-level monster hits him while he is wrecked. He has no pact. He cannot win. He is about to die.
 
 ## She was already there
-Akari steps in. The circle was not empty in the way they thought. She did not appear on the instructors' clock.
-She saves his life. First act is rescue plus contempt, not service.
-Something sarcastic about the idiot who almost died.
+Akari steps in. The call was not empty in the way he thought. She did not appear on an instructor's clock because there was no instructor. She came when he was about to die.
+Rescue plus contempt. Not service.
+He thinks he failed. She knows something happened. Neither can name the bond yet.
 
-## What this scene is for
-Ash thinks he failed.
-Akari knows something happened.
-Neither understands the bond yet.
-This is the Bloodbound rule in the first minute: he did not become a fighter. His summon came to him.
-
-## Later echoes (do not dump them here)
-Why the circle misbehaved: he is not ordinary. Three SSS-potentials, born E.
-Second tail later: bond path the Kitsune forgot.
-Outskirts monsters exist in his childhood; he may recognize the *kind* of threat without knowing Damian made the first ones.
-
-## Unpinned inside the beat
-Whether the ledger seal happens in the woods or back at the academy.
-Whether the monster is a named species.
-Exact lines.
-Whether this fight is playable as the first ring or stays a directed scene with one lie.
+## Academy circle
+The official circle is a later humiliation or paperwork. It is NOT this meeting. Do not make the first call a proctor performance.
 
 ## Live code
-Current courtyard Foxwood beg-chain + classmate wolf is now off this beat. Do not treat that slice as the meeting. Rebuild only when told.
+Wilderness call → fail → whelp → she arrives. Circle is not required first.
