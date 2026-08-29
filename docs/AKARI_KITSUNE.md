@@ -2,21 +2,22 @@
 
 Bloodbound only. Design only. Player brick locked.
 
-## Akari
-Tsundere. Sharp. Proud. Dark humor. Competitive. Disciplined. Sure Kitsune sit above every other race. Dismissive of Ash: outskirts boy, not a partner. Opening thought is closer to "why am I stuck with this idiot" than wonder.
-Humor can live in the pact. Cruelty-for-sport cannot.
+## Akari — first summon
+Princess of Kitasa. Kitsune. Shrine maiden in training.
+Tsundere. Sharp. Proud. Dark humor. Competitive. Disciplined. Strong-willed.
+Combatant, not a pet. Can refuse. Refusal is character, not a cooldown.
+Raised on Kitsune superiority. Outskirts Ash is not impressive. Opening pact is not affection. Arc earns respect. Do not flatten her on seal.
+
+## Rival
+A real rival who tries to beat her at training, meditation, technique, status. Not a generic jealous extra. Name unpinned.
+
+## Power doctrine vs buried path
+Modern path: training, discipline, meditation.
+Forgotten: the first nine-tail was a man. Tails through a bond. History hidden. Do not invent his name, partner, or who buried it.
 
 ## Second tail
-Not a level-up. It shows after the bond with Ash has actually changed something.
-Her culture has no clean explanation. A rival sees it first and says she cheated. Suspicion, not a party.
+Bond evidence, not XP. Rival says she cheated. First public crack in the doctrine.
+Tails are story/relationship facts. Not damage × n.
 
-## Forgotten truth
-The first nine-tailed Kitsune was a man. His tails came through a bond, not the later training doctrine.
-History was rewritten. Meditation and drill became the official path. Bond was erased. Power thinned. Arrogance filled the hole: "we are superior because we are Kitsune."
-They think they kept the old way. They kept the decline.
-
-## Why Ash matters here
-He is not coaching her onto a power curve. The pact is accidentally finding the path her people buried.
-Second tail is the first public crack. She does not understand it. The shrine does not. Elders may refuse it. The erased male nine-tail is the long mystery, not a loading-screen tip.
-
-Tails stay story facts. Not damage × n. Not a grind table.
+## Combat language
+Deception. False target, punish window. Enemy hits the lie. Real fox hits the opening. Images do not deal damage. Ash does not punch beside her.
