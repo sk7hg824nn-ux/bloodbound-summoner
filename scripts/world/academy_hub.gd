@@ -43,7 +43,7 @@ func _objective() -> void:
 	if PactSystem.is_pacted("kitsune"):
 		Campaign.set_objective("She answered in the trees. The ring is east when you mean it.")
 	else:
-		Campaign.set_objective("Call in the wilderness. Not in their circle.")
+		Campaign.set_objective("Draw the circle in the wilderness. Give the drop.")
 
 func _spots() -> void:
 	_make_spot("circle", "Examination Circle", "Step in.", Vector2(480, 420))
@@ -99,6 +99,7 @@ func _say(pack: Dictionary) -> void:
 func _on_choice(choice_id: String) -> void:
 	match choice_id:
 		"wd_call":
+			_draw_rite(player.global_position)
 			_say(FirstSummon.woods_fail())
 		"wd_walk":
 			_waiting_walk = true
@@ -108,6 +109,19 @@ func _on_choice(choice_id: String) -> void:
 		"sm_done":
 			EventBus.toast.emit("She is not a pet. Something opened anyway.")
 			_objective()
+
+func _draw_rite(at: Vector2) -> void:
+	var line := Line2D.new()
+	line.name = "RiteCircle"
+	line.width = 3.0
+	line.default_color = Color(0.62, 0.14, 0.16, 0.9)
+	var pts := PackedVector2Array()
+	for i in 28:
+		var a := TAU * float(i) / 28.0
+		pts.append(at + Vector2(cos(a), sin(a)) * 38.0)
+	pts.append(pts[0])
+	line.points = pts
+	$World.add_child(line)
 
 func _begin_ambush() -> void:
 	_waiting_walk = false
