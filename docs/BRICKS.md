@@ -1,5 +1,5 @@
 # Lego stack
 
-Player → Combat → Kitsune → Pact → Bond → Academy → Dialogue → Tournament → Dragoness → Bunny → World → Bosses → Endgame
+Player (LOCKED) → Pact + Combat (Akari, one tail) → Lithanya → Breana → World → Bosses → Endgame
 
-`Bricks` autoload unlocks in that order. Do not skip.
+Do not reopen the Player brick.
