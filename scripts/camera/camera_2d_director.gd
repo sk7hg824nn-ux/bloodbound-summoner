@@ -13,6 +13,13 @@ func set_target(n: Node2D) -> void:
 	enabled = true
 	make_current()
 
+func set_bounds(rect: Rect2) -> void:
+	limit_enabled = true
+	limit_left = int(rect.position.x)
+	limit_top = int(rect.position.y)
+	limit_right = int(rect.end.x)
+	limit_bottom = int(rect.end.y)
+
 func set_mode(next: Mode) -> void:
 	mode = next
 
