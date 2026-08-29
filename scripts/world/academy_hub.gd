@@ -3,6 +3,7 @@ extends Node2D
 @onready var player: Player = $Entities/Player
 @onready var touch: TouchControls = $TouchControls
 @onready var camera: Camera2DDirector = $CameraDirector
+var _yard := Rect2(-20, 180, 1220, 540)
 
 func _ready() -> void:
 	GameState.era = "academy"
@@ -24,7 +25,7 @@ func _ready() -> void:
 	Campaign.set_objective("Walk. Confirm the era change. Combat comes later.")
 
 func _fence_yard() -> void:
-	var yard := Rect2(-20, 180, 1220, 540)
+	var yard := _yard
 	camera.set_bounds(yard)
 	var wall := StaticBody2D.new()
 	wall.collision_layer = 2
@@ -44,6 +45,10 @@ func _fence_yard() -> void:
 		shape.shape = rect
 		shape.position = box.get_center()
 		wall.add_child(shape)
+
+func _physics_process(_delta: float) -> void:
+	var pad := Vector2(18, 22)
+	player.global_position = player.global_position.clamp(_yard.position + pad, _yard.end - pad)
 
 func _talk() -> void:
 	EventBus.toast.emit("Academy talk comes with later bricks.")

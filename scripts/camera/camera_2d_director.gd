@@ -45,6 +45,9 @@ func _process(delta: float) -> void:
 	var rig: Dictionary = _rig()
 	_look = _look.lerp(rig["look"], 4.0 * delta)
 	var dest := target.global_position + _look
+	if limit_enabled:
+		dest.x = clampf(dest.x, float(limit_left) + 80.0, float(limit_right) - 80.0)
+		dest.y = clampf(dest.y, float(limit_top) + 50.0, float(limit_bottom) - 50.0)
 	if _shake > 0.0:
 		dest += Vector2(randf_range(-1, 1), randf_range(-1, 1)) * _shake * 18.0
 		_shake = move_toward(_shake, 0.0, delta * 1.8)
