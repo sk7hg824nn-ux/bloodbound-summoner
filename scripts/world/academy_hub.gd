@@ -36,14 +36,18 @@ func _ready() -> void:
 	EventBus.combat_ended.connect(_on_combat_ended)
 	if PactSystem.is_pacted("kitsune"):
 		_spawn_akari()
-	EventBus.toast.emit("The woods are west. That is where you call.")
+	EventBus.toast.emit("The circle first. Everyone is watching.")
 	_objective()
 
 func _objective() -> void:
 	if PactSystem.is_pacted("kitsune"):
 		Campaign.set_objective("She answered in the trees. The ring is east when you mean it.")
+	elif GameState.has_flag("week_later"):
+		Campaign.set_objective("The woods. No crowd. Circle and drop. Hands unsteady.")
+	elif GameState.has_flag("exam_failed"):
+		Campaign.set_objective("A week of being the joke.")
 	else:
-		Campaign.set_objective("Draw the circle in the wilderness. Give the drop.")
+		Campaign.set_objective("The examination rite. In front of everyone.")
 
 func _spots() -> void:
 	_make_spot("circle", "Examination Circle", "Step in.", Vector2(480, 420))
@@ -81,12 +85,19 @@ func _interact() -> void:
 		return
 	match _near[_near.size() - 1].interact_id:
 		"circle":
-			EventBus.toast.emit("That slate is not where you call. The woods are.")
+			if GameState.has_flag("exam_failed"):
+				EventBus.toast.emit("They already wrote insufficient.")
+			else:
+				_say(FirstSummon.circle_open(GameState.player_name))
 		"woods":
 			if PactSystem.is_pacted("kitsune"):
 				_say({"speaker": "Akari", "lines": ["\"You already almost died. The sand is that way if you insist on repeating it.\""], "choices": []})
-			else:
+			elif GameState.has_flag("week_later"):
 				_say(FirstSummon.woods_call(GameState.player_name))
+			elif GameState.has_flag("exam_failed"):
+				EventBus.toast.emit("Not today. A week.")
+			else:
+				EventBus.toast.emit("Not yet. They are still watching the circle.")
 		"ring":
 			if not PactSystem.is_pacted("kitsune"):
 				EventBus.toast.emit("You have no pact.")
@@ -98,6 +109,16 @@ func _say(pack: Dictionary) -> void:
 
 func _on_choice(choice_id: String) -> void:
 	match choice_id:
+		"ex_try":
+			GameState.set_flag("exam_failed")
+			_say(FirstSummon.circle_fail())
+			_objective()
+		"ex_leave":
+			_say(FirstSummon.week_later())
+		"wk_ok":
+			GameState.set_flag("week_later")
+			_objective()
+			EventBus.toast.emit("Seven days. The woods are west.")
 		"wd_call":
 			_draw_rite(player.global_position)
 			_say(FirstSummon.woods_fail())
