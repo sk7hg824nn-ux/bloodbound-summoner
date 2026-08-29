@@ -11,6 +11,9 @@ var ring: PactRing
 var ambush: WolfSummon
 var _in_ring := false
 var _in_ambush := false
+var _waiting_walk := false
+var _walk_from := Vector2.ZERO
+var _strike_t := 0.0
 
 func _ready() -> void:
 	GameState.era = "academy"
@@ -97,34 +100,27 @@ func _on_choice(choice_id: String) -> void:
 	match choice_id:
 		"wd_call":
 			_say(FirstSummon.woods_fail())
-		"wd_stay":
-			_begin_ambush()
+		"wd_walk":
+			_waiting_walk = true
+			_walk_from = player.global_position
+			Campaign.set_objective("Walk away. You failed.")
+			EventBus.toast.emit("Nothing answered. Leave.")
 		"sm_done":
 			EventBus.toast.emit("She is not a pet. Something opened anyway.")
 			_objective()
 
 func _begin_ambush() -> void:
+	_waiting_walk = false
 	_in_ambush = true
+	_strike_t = 0.55
 	camera.set_mode(Camera2DDirector.Mode.COMBAT)
 	ambush = WolfSummon.new()
 	ambush.display_name = "Whelp"
 	$Entities.add_child(ambush)
-	ambush.global_position = player.global_position + Vector2(90, -10)
+	ambush.global_position = player.global_position + Vector2(80, -8)
 	if ambush.label:
 		ambush.label.text = "Whelp"
-	ambush.lunged.connect(_on_ambush_hit)
-	EventBus.toast.emit("You have no pact. You cannot win this.")
-	Campaign.set_objective("You are not a fighter. Survive long enough.")
-
-func _on_ambush_hit(target: Node2D) -> void:
-	if not _in_ambush:
-		return
-	if target == player:
-		GameState.take_damage(3)
-		player.sync_hp_from_state()
-		EventBus.toast.emit("You cannot win this.")
-		if GameState.hp <= max(8, GameState.max_hp - 6):
-			_resolve_arrival()
+	EventBus.toast.emit("It moves. The strike is coming.")
 
 func _resolve_arrival() -> void:
 	if not _in_ambush:
@@ -160,7 +156,7 @@ func _start_ring() -> void:
 	Campaign.set_objective("PACT = lie. ATK = cut.")
 
 func _atk() -> void:
-	if _in_ambush:
+	if _in_ambush or _waiting_walk:
 		EventBus.toast.emit("You have no pact.")
 		return
 	if ring and _in_ring:
@@ -171,7 +167,7 @@ func _atk() -> void:
 		EventBus.toast.emit("The ring is east.")
 
 func _pact_btn() -> void:
-	if _in_ambush:
+	if _in_ambush or _waiting_walk:
 		EventBus.toast.emit("You have no pact.")
 		return
 	if ring and _in_ring:
@@ -231,6 +227,9 @@ func _physics_process(delta: float) -> void:
 		akari.follow(player, delta)
 	if ring and _in_ring:
 		ring.tick(delta)
-	if _in_ambush and ambush and is_instance_valid(ambush):
-		if ambush.lock == null and ambush.recover <= 0.0:
-			ambush.pick([player])
+	if _waiting_walk and player.global_position.distance_to(_walk_from) > 70.0:
+		_begin_ambush()
+	if _in_ambush:
+		_strike_t -= delta
+		if _strike_t <= 0.0:
+			_resolve_arrival()
