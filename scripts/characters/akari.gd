@@ -15,7 +15,7 @@ func _ready() -> void:
 	if label:
 		label.text = "Akari"
 	if figure:
-		figure.hair = Color(0.72, 0.28, 0.12)
+		figure.hair = Color(0.48, 0.22, 0.72)
 		figure._paint()
 		_one_tail()
 
@@ -26,19 +26,19 @@ func _one_tail() -> void:
 		return
 	var tail := Polygon2D.new()
 	tail.name = "Tail"
-	tail.color = Color(0.93, 0.55, 0.28, 0.95)
+	tail.color = Color(0.48, 0.22, 0.72, 0.95)
 	tail.polygon = PackedVector2Array([Vector2(0, 10), Vector2(-8, 16), Vector2(-2, 36), Vector2(8, 16)])
 	tail.position = Vector2(-6, 8)
 	tail.rotation = -0.6
 	figure.add_child(tail)
 	var ear_l := Polygon2D.new()
 	ear_l.name = "EarL"
-	ear_l.color = Color(0.72, 0.28, 0.12)
+	ear_l.color = Color(0.48, 0.22, 0.72)
 	ear_l.polygon = PackedVector2Array([Vector2(-7, -30), Vector2(-12, -42), Vector2(-2, -32)])
 	figure.add_child(ear_l)
 	var ear_r := Polygon2D.new()
 	ear_r.name = "EarR"
-	ear_r.color = Color(0.72, 0.28, 0.12)
+	ear_r.color = Color(0.48, 0.22, 0.72)
 	ear_r.polygon = PackedVector2Array([Vector2(7, -30), Vector2(12, -42), Vector2(2, -32)])
 	figure.add_child(ear_r)
 
