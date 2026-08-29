@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=3 uid="uid://boot0001"]
+
+[ext_resource type="Script" path="res://scripts/boot/boot.gd" id="1_boot"]
+
+[node name="Boot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_boot")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.09, 0.07, 0.12, 1)
+
+[node name="Accent" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 390.0
+offset_bottom = 8.0
+color = Color(0.76, 0.38, 0.18, 1)
+
+[node name="Center" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -180.0
+offset_right = 160.0
+offset_bottom = 180.0
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "The Bloodbound
+Summoner"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Center"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.7, 0.55, 1)
+theme_override_font_sizes/font_size = 14
+text = "Everyone else can summon.
+You make pacts."
+horizontal_alignment = 1
+
+[node name="Start" type="Button" parent="Center"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Create Protagonist"
+
+[node name="ContinueHint" type="Label" parent="Center"]
+layout_mode = 2
+theme_override_colors/font_size = 11
+theme_override_font_sizes/font_size = 11
+text = "Xogot / Godot 4"
+horizontal_alignment = 1

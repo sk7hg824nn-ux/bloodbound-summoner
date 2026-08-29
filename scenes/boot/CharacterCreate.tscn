@@ -1,0 +1,79 @@
+[gd_scene load_steps=2 format=3 uid="uid://charcreate01"]
+
+[ext_resource type="Script" path="res://scripts/boot/character_create.gd" id="1_cc"]
+
+[node name="CharacterCreate" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cc")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.1, 0.08, 0.13, 1)
+
+[node name="Panel" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -240.0
+offset_right = 160.0
+offset_bottom = 240.0
+theme_override_constants/separation = 14
+
+[node name="H" type="Label" parent="Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Enrollment"
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="Panel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.7, 0.62, 1)
+theme_override_font_sizes/font_size = 13
+text = "Name and sex. The bloodline does not care which you choose. The dorm will."
+autowrap_mode = 3
+
+[node name="NameEdit" type="LineEdit" parent="Panel"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Given name"
+alignment = 1
+
+[node name="SexRow" type="HBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Male" type="Button" parent="Panel/SexRow"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Male"
+
+[node name="Female" type="Button" parent="Panel/SexRow"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Female"
+
+[node name="Preview" type="Label" parent="Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "Ash"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Enter" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "Enter the Academy"
