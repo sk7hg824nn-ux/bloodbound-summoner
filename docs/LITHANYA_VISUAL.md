@@ -1,18 +1,28 @@
-# Lithanya — visual sheet vs locked species
+# Lithanya — visual target
 
-Sheet dated 2026-08-30. Second summon. Height 5'9". Green hair. Gold-green gown. Pointed ears. Soft-to-commanding faces.
+Sheet 2026-08-30, second version. Title on the art: Dragoness Empress.
 
-Quote on the sheet is usable:
-"I do not serve easily... but you, Ash, are the only one I have chosen."
+Species lock stands: she is a DRAGONESS.
+Serpent is title, venom, and motif. It does not replace the dragon.
 
-## Clash — not auto-locked
-The sheet titles her Serpent Empress and gives her a snake.
-Locked Bloodbound Lithanya is a DRAGONESS.
-Language: power / space / knowledge. Kit: Claw, Breath, Wing Guard, Dragon Rush, Tail Sweep, Insight.
+## Sheet facts worth keeping
+- Second summon. Height 7'7" human. Dragon form 40'+.
+- Age unknown. Neutral, loyal to Ash. Chosen, not owned.
+- Quote: "I do not serve easily... but you, Ash, are the only one I have chosen to kneel before."
+- Two forms: humanoid (horns, wings, green-gold armor-gown, emerald spear) and true dragon.
+- Palette: emerald, black, gold, poison-green flame.
+- Faces: calm, regal, amused, angry, serious, soft, smirk.
 
-Do not replace dragon with serpent unless you explicitly change that species.
-Do not lock Nature/Poison or the sheet skill names (Viper's Bite, etc.). Story names her element. The paper kit already exists.
+## Element
+Sheet says Nature / Poison. Usable as the visual of her breath.
+Do not turn that into a type-chart until a chapter names it in story.
 
-## What can be used now
-Green-black-gold palette. Tall. Regal. Chosen-not-owned. Layer breakdown as painted 2D later.
-Not on the phone. Year 1 does not contain her.
+## Combat paper vs this sheet
+Locked first language stays: nowhere safe to stand.
+Claw, Breath, Wing Guard, Dragon Rush, Tail Sweep, Ancient Insight.
+
+Sheet names (Viper's Majesty, Emerald Breath, Serpent's Coil, Venomous Bloom, Draconic Ascension) are later-rank / form language. Not Year 1. Not a second HUD.
+Draconic Ascension is the true-dragon transform. Story-gated.
+
+## Not on the phone
+Year 1 is still timid Ash and one-tail Akari.
