@@ -9,9 +9,11 @@ static func compose(world: Node2D, room: String) -> LayerStack:
 	match room:
 		"hall":
 			stack.dress_hall()
+			_overlay_png(stack, "hall")
 		"woods":
 			_overlay_png(stack, "woods")
-		"village":
+		"village", "yard", "town":
+			stack.dress_town()
 			_overlay_png(stack, "village")
 	return stack
 
