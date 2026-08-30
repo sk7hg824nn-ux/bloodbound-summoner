@@ -48,21 +48,16 @@ func dress_hall() -> void:
 		for c in world.get_children():
 			if c is ColorRect:
 				c.visible = false
-	_plate(band("Background"), Rect2(-80, -80, 1400, 300), Color(0.08, 0.07, 0.10))
-	_plate(band("Distant"), Rect2(300, 40, 280, 140), Color(0.14, 0.12, 0.16))
-	_plate(band("Distant"), Rect2(700, 30, 220, 150), Color(0.13, 0.11, 0.15))
-	_plate(band("Architecture"), Rect2(-20, 220, 170, 300), Color(0.22, 0.16, 0.16))
-	_plate(band("Architecture"), Rect2(1040, 220, 170, 300), Color(0.22, 0.16, 0.16))
-	_plate(band("Architecture"), Rect2(40, 200, 140, 36), Color(0.30, 0.18, 0.18))
-	_plate(band("Architecture"), Rect2(40, 248, 140, 36), Color(0.26, 0.16, 0.16))
-	_plate(band("Architecture"), Rect2(40, 296, 140, 36), Color(0.24, 0.15, 0.15))
-	_plate(band("Architecture"), Rect2(1040, 200, 140, 36), Color(0.30, 0.18, 0.18))
-	_plate(band("Architecture"), Rect2(1040, 248, 140, 36), Color(0.26, 0.16, 0.16))
-	_plate(band("Architecture"), Rect2(1040, 296, 140, 36), Color(0.24, 0.15, 0.15))
-	_plate(band("Architecture"), Rect2(-40, 180, 1280, 520), Color(0.16, 0.14, 0.16, 0.35))
-	_circle(band("Architecture"), Vector2(480, 420), 70.0, Color(0.62, 0.12, 0.14, 0.95))
-	_plate(band("Foreground"), Rect2(-10, 140, 24, 260), Color(0.12, 0.08, 0.08, 0.7))
-	_plate(band("Foreground"), Rect2(1180, 160, 22, 240), Color(0.12, 0.08, 0.08, 0.7))
+	var spr := Sprite2D.new()
+	spr.texture = HallArt.tex()
+	spr.centered = false
+	spr.position = Vector2(-40, 80)
+	spr.scale = Vector2(1.28, 0.92)
+	var arch := band("Architecture")
+	if arch:
+		arch.add_child(spr)
+	_plate(band("Foreground"), Rect2(-10, 140, 22, 260), Color(0.10, 0.06, 0.06, 0.65))
+	_plate(band("Foreground"), Rect2(1180, 160, 20, 240), Color(0.10, 0.06, 0.06, 0.65))
 
 func _plate(root: Node2D, r: Rect2, color: Color) -> void:
 	if root == null:
@@ -72,17 +67,3 @@ func _plate(root: Node2D, r: Rect2, color: Color) -> void:
 	n.size = r.size
 	n.color = color
 	root.add_child(n)
-
-func _circle(root: Node2D, at: Vector2, radius: float, color: Color) -> void:
-	if root == null:
-		return
-	var line := Line2D.new()
-	line.width = 4.0
-	line.default_color = color
-	var pts := PackedVector2Array()
-	for i in 32:
-		var a := TAU * float(i) / 32.0
-		pts.append(at + Vector2(cos(a), sin(a)) * radius)
-	pts.append(pts[0])
-	line.points = pts
-	root.add_child(line)

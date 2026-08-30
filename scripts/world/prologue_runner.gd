@@ -14,4 +14,5 @@ func _to_academy() -> void:
 	GameState.set_flag("prologue_done")
 	GameState.era = "academy"
 	GameState.location = "hall"
+	SaveSystem.write()
 	get_tree().change_scene_to_file("res://scenes/world/Academy.tscn")

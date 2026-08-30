@@ -31,9 +31,9 @@ func _process(_delta: float) -> void:
 
 func _enter() -> void:
 	var n := name_edit.text.strip_edges()
+	SaveSystem.clear()
 	GameState.reset_run()
-	PactSystem.pacted = {"kitsune": false, "dragoness": false, "bunny": false}
-	PactSystem.bonds = {"kitsune": 0, "dragoness": 0, "bunny": 0}
+	PactSystem.reset()
 	Relationships.reset()
 	Campaign.reset()
 	Bricks.reset()
