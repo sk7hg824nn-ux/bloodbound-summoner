@@ -1,6 +1,5 @@
 extends Node2D
 class_name Figure2D
-## Illustrated stand-in. Same node names when painted art arrives.
 
 var kind: String = "human"
 var body_color: Color = Color(0.4, 0.5, 0.8)
@@ -70,23 +69,38 @@ func _paint() -> void:
 		hair_front.color = hair.lightened(0.08)
 	if head:
 		head.color = skin
+	_apply_portrait()
+
+func _apply_portrait() -> void:
+	var tex: Texture2D = null
+	if kind == "kitsune" and ClassDB.class_exists("ArtAkari"):
+		tex = ArtAkari.tex()
+	elif ClassDB.class_exists("ArtAsh"):
+		tex = ArtAsh.tex()
+	if tex == null:
+		return
+	for c in get_children():
+		if c is Polygon2D:
+			c.visible = false
+	var spr := get_node_or_null("Portrait") as Sprite2D
+	if spr == null:
+		spr = Sprite2D.new()
+		spr.name = "Portrait"
+		spr.centered = true
+		spr.position = Vector2(0, -10)
+		add_child(spr)
+	spr.texture = tex
+	spr.scale = Vector2(0.24, 0.24)
 
 func apply_look(era: String) -> void:
 	if era == "child":
 		look_scale = 0.84
-		if head:
-			head.scale = Vector2(1.18, 1.18)
-			head.position = Vector2(0, 2)
-		if coat:
-			coat.color = Color(0.72, 0.42, 0.38) if body_color.r > 0.5 else Color(0.38, 0.52, 0.46)
 	else:
 		look_scale = 1.0
-		if head:
-			head.scale = Vector2.ONE
-			head.position = Vector2.ZERO
-		if coat:
-			coat.color = body_color
 	scale = Vector2(facing_x * look_scale, look_scale)
+	var portrait := get_node_or_null("Portrait") as Sprite2D
+	if portrait:
+		portrait.scale = Vector2(0.20, 0.20) if era == "child" else Vector2(0.24, 0.24)
 
 func set_facing(dir: Vector2) -> void:
 	if abs(dir.x) > 0.12:
