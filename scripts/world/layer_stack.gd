@@ -1,16 +1,22 @@
 extends Node2D
 class_name LayerStack
 
-const NAMES := ["Background", "Distant", "Architecture", "Npcs", "Party", "Foreground"]
-const Z := [-40, -24, -10, 1, 4, 30]
+const NAMES := ["FarMountains", "FarBackground", "Buildings", "Npcs", "Party", "ForegroundNpcs", "Foreground"]
+const Z := [-40, -30, -15, -5, 0, 5, 12]
 const SCALE := [
-	Vector2(0.06, 0.02),
-	Vector2(0.22, 0.05),
-	Vector2(0.55, 0.10),
+	Vector2(0.04, 0.01),
+	Vector2(0.12, 0.03),
+	Vector2(0.40, 0.08),
 	Vector2(1.0, 1.0),
 	Vector2(1.0, 1.0),
-	Vector2(1.35, 1.08),
+	Vector2(1.12, 1.04),
+	Vector2(1.35, 1.10),
 ]
+const ALIAS := {
+	"Background": "FarMountains",
+	"Distant": "FarBackground",
+	"Architecture": "Buildings",
+}
 
 static func attach(host: Node2D) -> LayerStack:
 	var existing := host.get_node_or_null("LayerStack") as LayerStack
@@ -30,7 +36,10 @@ static func attach(host: Node2D) -> LayerStack:
 	return stack
 
 func band(name: String) -> Node2D:
-	return get_node_or_null(name) as Node2D
+	var key := name
+	if ALIAS.has(key):
+		key = str(ALIAS[key])
+	return get_node_or_null(key) as Node2D
 
 func freeze() -> void:
 	for c in get_children():
@@ -52,14 +61,14 @@ func dress_hall() -> void:
 	far.size = Vector2(1600, 220)
 	far.position = Vector2(-200, -40)
 	far.color = Color(0.16, 0.14, 0.20)
-	var bg := band("Background")
+	var bg := band("FarMountains")
 	if bg:
 		bg.add_child(far)
 	var mid := ColorRect.new()
 	mid.size = Vector2(1400, 160)
 	mid.position = Vector2(-80, 40)
 	mid.color = Color(0.22, 0.18, 0.24, 0.85)
-	var dist := band("Distant")
+	var dist := band("FarBackground")
 	if dist:
 		dist.add_child(mid)
 	var spr := Sprite2D.new()

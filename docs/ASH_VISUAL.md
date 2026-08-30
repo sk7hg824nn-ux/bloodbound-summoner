@@ -1,6 +1,7 @@
 # Ash — visual target (academy)
 
-Reference sheet provided 2026-08-30. Academy look. Not childhood.
+Reference sheets + TRUE 2.5D board (2026-08-30).
+Academy look. Not childhood.
 
 ## Sheet facts
 - Height 6'3". Age 19. Lean / athletic.
@@ -10,31 +11,40 @@ Reference sheet provided 2026-08-30. Academy look. Not childhood.
 ## Palette
 - Hair: white with green streak
 - Eyes: green
-- Coat: black, long, ragged hem
-- Lining: vivid green, torn like a second edge
+- Coat: black, long, gold/green filigree, ragged hem
+- Lining: vivid green
 - Body: black layers, belts, gloves, boots
 
-## Field implementation (2026-08-30 art pass)
+## Production facings (board)
+FRONT, BACK, LEFT, RIGHT, 3/4 FRONT, 3/4 BACK.
+LEFT and RIGHT are painted separately when the coat is asymmetric.
+flip_h is a placeholder only.
+
+## Production animation states (board)
+IDLE, WALK, RUN, CAST, ATTACK, DODGE.
+FieldPresenter also reserves hit / summon / death so clips can drop in later.
+Ash does not fight empty-handed. ATTACK on Ash is UNDEFINED until canon gives him a weapon that is not a summon. CAST is the rite / pact motion.
+
+## Field implementation
 Illustrated frames live in `ArtAsh` / packed atlas `art_ash_data.gd`.
 `FieldPresenter` draws them with `AnimatedSprite2D`.
 `Figure2D` polygon layers stay attached as a hidden fallback only.
 
-Frames:
+Current placeholder frame names:
 - idle_se, idle_front, idle_back, idle_side
 - walk_se_0, walk_se_1
 - run_se_0, run_se_1
-- child_idle_se (separate child proportions + childhood clothes)
-- face_close (cinematic push-in)
+- child_idle_se
+- face_close (cinematic push-in / CLOSE SHOT)
 
-Directions: front / back / side / 3-4. Left is flip_h of right.
 Depth: `DepthRig.scale_at(y) * BASE` on the Field node. Do not scale Ash per shot.
 
-## Layers (already the Figure2D names)
+## Layers (Figure2D fallback)
 Shadow, Coat, Lining, Arm, Head, Hair
 
 ## Face
-The sheet's smirk / focused faces are later Ash.
+The board's smirk / focused faces are later Ash.
 Year 1 woods rite still plays timid even if the coat looks like this.
 
 ## What this is not
-Not a LoRA. Not a MeshInstance. Not the character-sheet image used as a sprite.
+Not a LoRA. Not a MeshInstance. Not the character-sheet image used raw as a sprite.

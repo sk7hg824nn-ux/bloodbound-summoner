@@ -87,6 +87,14 @@ func _run(beat) -> void:
 		var tw = create_tween()
 		tw.tween_property(fade, "color", Color(0, 0, 0, float(beat.get("a", 1.0))), float(beat.get("sec", 0.5)))
 		tw.finished.connect(_resume)
+	elif kind == "cam_named":
+		if camera != null:
+			var around = beat.get("around", Vector2(480, 320))
+			if actor != null and beat.get("follow_actor", false):
+				around = actor.global_position
+			camera.named_shot(str(beat.get("shot", "medium")), around, float(beat.get("sec", 0.8)))
+		_busy = true
+		get_tree().create_timer(float(beat.get("sec", 0.8))).timeout.connect(_resume)
 	elif kind == "cam_shot":
 		if camera != null:
 			camera.shot_to(beat.get("pos", Vector2(480, 320)), float(beat.get("zoom", 1.0)), float(beat.get("sec", 0.8)))

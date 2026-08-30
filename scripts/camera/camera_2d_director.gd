@@ -33,6 +33,34 @@ func shot_to(pos: Vector2, z: float, _sec: float) -> void:
 	_shot = pos
 	_shot_z = z
 
+func named_shot(shot: String, around: Vector2, sec: float = 0.8) -> void:
+	var id := shot.strip_edges().to_lower().replace(" ", "_")
+	var pos := around
+	var z := 1.12
+	match id:
+		"wide", "wide_shot":
+			pos = around + Vector2(0, 24)
+			z = 0.92
+		"medium", "medium_shot":
+			pos = around + Vector2(0, -16)
+			z = 1.28
+		"close", "close_shot":
+			pos = around + Vector2(0, -38)
+			z = 1.86
+		"push_in", "pushin":
+			pos = around + Vector2(0, -26)
+			z = 1.62
+		"over_shoulder", "over-the-shoulder", "ots":
+			pos = around + Vector2(-52, -20)
+			z = 1.44
+		"dynamic", "dynamic_angle":
+			pos = around + Vector2(34, -10)
+			z = 1.22
+		_:
+			pos = around
+			z = 1.12
+	shot_to(pos, z, sec)
+
 func punch(amount: float = 0.18) -> void:
 	_shake = max(_shake, amount)
 

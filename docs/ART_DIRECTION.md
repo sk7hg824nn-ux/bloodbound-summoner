@@ -1,9 +1,9 @@
 # Visual art direction — locked
 
-2D illustrated art, presented as 2.5D. No LoRA required. No MeshInstance.
+TRUE 2.5D board is the production target.
+2D illustrated art, staged as 2.5D. No LoRA required at runtime. No MeshInstance.
 
-Painted portraits replace Polygon2D blocks at runtime (Figure2D Portrait sprite).
-Painted plates replace ColorRect yards (PaintedWorld).
-
-Layer names stay: Shadow, Coat, Lining, Arm, Head, Hair, Eyes.
+Painted plates replace ColorRect yards.
+Six-view illustrated frames replace Figure2D polygons on the field.
+Layer names for puppet fallback stay: Shadow, Coat, Lining, Arm, Head, Hair, Eyes.
 Player controller stays.
