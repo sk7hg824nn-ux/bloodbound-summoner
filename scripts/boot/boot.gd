@@ -1,21 +1,28 @@
 extends Control
 
 func _ready() -> void:
-	$Center/Start.pressed.connect(_start)
-	if SaveSystem.has_save():
-		var cont := Button.new()
-		cont.text = "Continue"
-		cont.custom_minimum_size = Vector2(0, 48)
-		$Center.add_child(cont)
-		$Center.move_child(cont, 3)
-		cont.pressed.connect(_continue)
-		$Center/ContinueHint.text = "A pact remembers."
-	else:
-		$Center/ContinueHint.text = "Xogot / Godot 4.6  •  844x390"
+	$Center/Start.visible = false
+	$Center/ContinueHint.text = "Three slots. One pact each."
+	for i in SaveSystem.SLOT_COUNT:
+		var b := Button.new()
+		b.custom_minimum_size = Vector2(0, 44)
+		var info := SaveSystem.peek(i)
+		if info.is_empty():
+			b.text = "Slot %d  —  empty" % (i + 1)
+			b.pressed.connect(_new_in.bind(i))
+		else:
+			var n := str(info.get("player_name", "Ash"))
+			var loc := str(info.get("location", ""))
+			b.text = "Slot %d  —  %s  ·  %s" % [i + 1, n, loc]
+			b.pressed.connect(_load_in.bind(i))
+		$Center.add_child(b)
+		$Center.move_child(b, 3 + i)
 
-func _start() -> void:
+func _new_in(slot: int) -> void:
+	SaveSystem.current_slot = slot
+	SaveSystem.clear_slot(slot)
 	get_tree().change_scene_to_file("res://scenes/boot/CharacterCreate.tscn")
 
-func _continue() -> void:
-	if SaveSystem.load_save():
+func _load_in(slot: int) -> void:
+	if SaveSystem.load_slot(slot):
 		get_tree().change_scene_to_file(SaveSystem.continue_scene())
