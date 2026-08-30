@@ -48,8 +48,6 @@ func _build() -> void:
 	hair_front = _poly("HairFront", hair.lightened(0.06), PackedVector2Array([Vector2(-8, -26), Vector2(-10, -32), Vector2(0, -36), Vector2(10, -32), Vector2(8, -26), Vector2(3, -22), Vector2(-4, -24)]))
 	eye_l = _poly("EyeL", Color(0.12, 0.10, 0.12), PackedVector2Array([Vector2(-5, -24), Vector2(-5, -26), Vector2(-2, -26), Vector2(-2, -24)]))
 	eye_r = _poly("EyeR", Color(0.12, 0.10, 0.12), PackedVector2Array([Vector2(2, -24), Vector2(2, -26), Vector2(5, -26), Vector2(5, -24)]))
-	var shine := _poly("Shine", Color(1, 1, 1, 0.18), PackedVector2Array([Vector2(-6, -28), Vector2(-2, -32), Vector2(2, -28)]))
-	shine.z_index = 4
 	_paint()
 
 func _poly(n: String, color: Color, pts: PackedVector2Array) -> Polygon2D:
@@ -63,20 +61,10 @@ func _poly(n: String, color: Color, pts: PackedVector2Array) -> Polygon2D:
 func _paint() -> void:
 	if coat:
 		coat.color = body_color
-	if hair_back:
-		hair_back.color = hair
-	if hair_front:
-		hair_front.color = hair.lightened(0.08)
-	if head:
-		head.color = skin
 	_apply_portrait()
 
 func _apply_portrait() -> void:
-	var tex: Texture2D = null
-	if kind == "kitsune" and ClassDB.class_exists("ArtAkari"):
-		tex = ArtAkari.tex()
-	elif ClassDB.class_exists("ArtAsh"):
-		tex = ArtAsh.tex()
+	var tex: Texture2D = ArtAsh.tex() if kind != "kitsune" else null
 	if tex == null:
 		return
 	for c in get_children():
@@ -90,17 +78,11 @@ func _apply_portrait() -> void:
 		spr.position = Vector2(0, -10)
 		add_child(spr)
 	spr.texture = tex
-	spr.scale = Vector2(0.24, 0.24)
+	spr.scale = Vector2(0.28, 0.28)
 
 func apply_look(era: String) -> void:
-	if era == "child":
-		look_scale = 0.84
-	else:
-		look_scale = 1.0
+	look_scale = 0.84 if era == "child" else 1.0
 	scale = Vector2(facing_x * look_scale, look_scale)
-	var portrait := get_node_or_null("Portrait") as Sprite2D
-	if portrait:
-		portrait.scale = Vector2(0.20, 0.20) if era == "child" else Vector2(0.24, 0.24)
 
 func set_facing(dir: Vector2) -> void:
 	if abs(dir.x) > 0.12:
@@ -108,30 +90,16 @@ func set_facing(dir: Vector2) -> void:
 		scale = Vector2(facing_x * look_scale, look_scale)
 
 func tick(delta: float) -> void:
-	if gait == "run" or (walking and gait != "idle"):
-		if gait != "run":
-			gait = "walk"
+	if gait == "run" or walking:
+		gait = "run" if gait == "run" else "walk"
 	elif not walking:
 		gait = "idle"
-	var speed := 3.0
-	var amp := 0.7
-	var arm_amp := 0.05
-	match gait:
-		"walk":
-			speed = 10.0; amp = 2.2; arm_amp = 0.35
-		"run":
-			speed = 16.0; amp = 3.4; arm_amp = 0.55
-	_bob += delta * speed
+	var amp := 2.2 if gait != "idle" else 0.7
+	_bob += delta * (12.0 if gait != "idle" else 3.0)
 	position.y = sin(_bob) * amp
-	if arm:
-		arm.rotation = sin(_bob) * arm_amp
 
 func swing() -> void:
-	if arm == null:
-		return
-	var tw := create_tween()
-	tw.tween_property(arm, "rotation", facing_x * 0.9, 0.06)
-	tw.tween_property(arm, "rotation", 0.0, 0.14)
+	pass
 
 func dodge_smear() -> void:
 	var tw := create_tween()
