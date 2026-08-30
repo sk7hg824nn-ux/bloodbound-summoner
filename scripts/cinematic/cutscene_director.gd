@@ -20,6 +20,8 @@ func play(beats: Array) -> void:
 	GameState.in_dialogue = true
 	if stack:
 		stack.freeze()
+	if camera:
+		camera.set_mode(Camera2DDirector.Mode.ROMANCE)
 	_step()
 
 func _step() -> void:
@@ -30,6 +32,8 @@ func _step() -> void:
 		GameState.in_dialogue = false
 		if stack:
 			stack.thaw()
+		if camera:
+			camera.set_mode(Camera2DDirector.Mode.EXPLORE)
 		finished.emit()
 		return
 	var beat: Dictionary = _beats[_i]
@@ -39,7 +43,7 @@ func _step() -> void:
 		"plate":
 			var id := String(beat.get("id", "black"))
 			if plate:
-				plate.texture = OriginArt.tex(id)
+				plate.texture = World25.still(id)
 			plate_changed.emit(id)
 			_step()
 		"cam":

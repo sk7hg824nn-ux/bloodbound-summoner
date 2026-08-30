@@ -15,6 +15,7 @@ var _waiting_walk := false
 var _walk_from := Vector2.ZERO
 var _strike_t := 0.0
 var _cut: CutsceneDirector
+var _stack: LayerStack
 
 func _ready() -> void:
 	GameState.era = "academy"
@@ -26,11 +27,10 @@ func _ready() -> void:
 	camera.set_target(player)
 	camera.set_mode(Camera2DDirector.Mode.EXPLORE)
 	_fence_yard()
-	_dress_hall()
+	_stack = World25.compose($World, "hall")
 	_spots()
 	_cut = CutsceneDirector.new()
-	_cut.camera = camera
-	_cut.stack = $World.get_node_or_null("LayerStack") as LayerStack
+	World25.bind_cut(_cut, camera, _stack)
 	add_child(_cut)
 	_cut.finished.connect(_on_exam_done)
 	touch.joystick_moved.connect(player.set_joystick)
@@ -46,10 +46,6 @@ func _ready() -> void:
 	_objective()
 	if not GameState.has_flag("exam_failed") and not PactSystem.is_pacted("kitsune"):
 		_cut.play(ExamCutscene.beats(GameState.player_name))
-
-func _dress_hall() -> void:
-	var stack := LayerStack.attach($World)
-	stack.dress_hall()
 
 func _objective() -> void:
 	if PactSystem.is_pacted("kitsune"):

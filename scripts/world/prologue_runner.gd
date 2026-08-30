@@ -9,7 +9,8 @@ func _ready() -> void:
 	plate.centered = false
 	plate.position = Vector2.ZERO
 	plate.z_index = 2
-	plate.texture = OriginArt.tex("castle")
+	plate.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	plate.texture = World25.still("castle")
 	add_child(plate)
 	var cut := CutsceneDirector.new()
 	cut.plate = plate
