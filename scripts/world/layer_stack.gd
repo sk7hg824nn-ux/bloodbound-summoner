@@ -57,30 +57,10 @@ func dress_hall() -> void:
 		for c in world.get_children():
 			if c is ColorRect:
 				c.visible = false
-	var far := ColorRect.new()
-	far.size = Vector2(1600, 220)
-	far.position = Vector2(-200, -40)
-	far.color = Color(0.16, 0.14, 0.20)
-	var bg := band("FarMountains")
-	if bg:
-		bg.add_child(far)
-	var mid := ColorRect.new()
-	mid.size = Vector2(1400, 160)
-	mid.position = Vector2(-80, 40)
-	mid.color = Color(0.22, 0.18, 0.24, 0.85)
-	var dist := band("FarBackground")
-	if dist:
-		dist.add_child(mid)
-	var spr := Sprite2D.new()
-	spr.texture = HallArt.tex()
-	spr.centered = false
-	spr.position = Vector2(-40, 80)
-	spr.scale = Vector2(1.28, 0.92)
-	var floor := band("Npcs")
-	if floor:
-		floor.add_child(spr)
-	_plate(band("Foreground"), Rect2(-80, 200, 70, 320), Color(0.10, 0.07, 0.08, 0.82))
-	_plate(band("Foreground"), Rect2(1180, 210, 90, 300), Color(0.10, 0.07, 0.08, 0.82))
+	var host := band("Buildings")
+	if host == null:
+		host = band("Npcs")
+	HallArt.mount(host)
 
 func _plate(root: Node2D, r: Rect2, color: Color) -> void:
 	if root == null:
