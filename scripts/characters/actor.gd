@@ -23,6 +23,7 @@ func _ready() -> void:
 	hp = max_hp
 	if body:
 		body.visible = false
+	z_as_relative = false
 	field = FieldPresenter.attach(self, field_sheet, figure_kind, body_color)
 	figure = field.figure if field else Figure2D.attach(self, figure_kind, body_color)
 	if label:
@@ -38,15 +39,17 @@ func apply_velocity(dir: Vector2) -> void:
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, move_speed * 6.0 * get_physics_process_delta_time())
 	move_and_slide()
+	z_index = int(global_position.y)
 	var left := facing.x < 0.0
 	if field:
-		field.play_gait(gait, left)
+		field.play_gait(gait, left, global_position.y)
 		field.tick(get_physics_process_delta_time())
 elif figure:
 		figure.set_facing(facing)
 		figure.walking = gait != "idle"
 		figure.gait = gait
 		figure.tick(get_physics_process_delta_time())
+		DepthRig.apply(figure, global_position.y, figure.facing_x)
 
 func take_hit(amount: int, _from: Node = null) -> void:
 	if invuln_time > 0.0 or hp <= 0:

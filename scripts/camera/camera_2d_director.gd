@@ -6,7 +6,7 @@ enum Mode { EXPLORE, COMBAT, ROMANCE, BOSS, TOURNAMENT }
 @export var mode: Mode = Mode.EXPLORE
 var target: Node2D
 var _shake: float = 0.0
-var _look: Vector2 = Vector2(0, -12)
+var _look: Vector2 = Vector2(0, -28)
 
 func set_target(n: Node2D) -> void:
 	target = n
@@ -29,15 +29,15 @@ func punch(amount: float = 0.18) -> void:
 func _rig() -> Dictionary:
 	match mode:
 		Mode.COMBAT:
-			return {"zoom": 1.32, "look": Vector2(0, -8), "lerp": 6.5}
+			return {"zoom": 1.38, "look": Vector2(0, -18), "lerp": 6.5}
 		Mode.ROMANCE:
-			return {"zoom": 1.62, "look": Vector2(0, -22), "lerp": 2.4}
+			return {"zoom": 1.72, "look": Vector2(0, -36), "lerp": 2.4}
 		Mode.BOSS:
-			return {"zoom": 1.05, "look": Vector2(18, -6), "lerp": 3.0}
+			return {"zoom": 1.02, "look": Vector2(22, -10), "lerp": 3.0}
 		Mode.TOURNAMENT:
-			return {"zoom": 1.08, "look": Vector2(0, 8), "lerp": 4.0}
+			return {"zoom": 1.06, "look": Vector2(0, 4), "lerp": 4.0}
 		_:
-			return {"zoom": 1.16, "look": Vector2(0, -12), "lerp": 5.0}
+			return {"zoom": 1.12, "look": Vector2(0, -28), "lerp": 5.0}
 
 func _process(delta: float) -> void:
 	if target == null or not is_instance_valid(target):

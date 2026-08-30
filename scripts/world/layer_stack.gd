@@ -2,14 +2,14 @@ extends Node2D
 class_name LayerStack
 
 const NAMES := ["Background", "Distant", "Architecture", "Npcs", "Party", "Foreground"]
-const Z := [-30, -18, -8, 1, 4, 12]
+const Z := [-40, -24, -10, 1, 4, 30]
 const SCALE := [
-	Vector2(0.12, 0.03),
-	Vector2(0.28, 0.06),
-	Vector2(0.62, 0.12),
+	Vector2(0.06, 0.02),
+	Vector2(0.22, 0.05),
+	Vector2(0.55, 0.10),
 	Vector2(1.0, 1.0),
 	Vector2(1.0, 1.0),
-	Vector2(1.22, 1.0),
+	Vector2(1.35, 1.08),
 ]
 
 static func attach(host: Node2D) -> LayerStack:
@@ -48,6 +48,20 @@ func dress_hall() -> void:
 		for c in world.get_children():
 			if c is ColorRect:
 				c.visible = false
+	var far := ColorRect.new()
+	far.size = Vector2(1600, 220)
+	far.position = Vector2(-200, -40)
+	far.color = Color(0.16, 0.14, 0.20)
+	var bg := band("Background")
+	if bg:
+		bg.add_child(far)
+	var mid := ColorRect.new()
+	mid.size = Vector2(1400, 160)
+	mid.position = Vector2(-80, 40)
+	mid.color = Color(0.22, 0.18, 0.24, 0.85)
+	var dist := band("Distant")
+	if dist:
+		dist.add_child(mid)
 	var spr := Sprite2D.new()
 	spr.texture = HallArt.tex()
 	spr.centered = false
@@ -56,8 +70,8 @@ func dress_hall() -> void:
 	var floor := band("Npcs")
 	if floor:
 		floor.add_child(spr)
-	_plate(band("Foreground"), Rect2(-10, 140, 22, 260), Color(0.22, 0.12, 0.12, 0.7))
-	_plate(band("Foreground"), Rect2(1180, 160, 20, 240), Color(0.22, 0.12, 0.12, 0.7))
+	_plate(band("Foreground"), Rect2(-80, 200, 70, 320), Color(0.10, 0.07, 0.08, 0.82))
+	_plate(band("Foreground"), Rect2(1180, 210, 90, 300), Color(0.10, 0.07, 0.08, 0.82))
 
 func _plate(root: Node2D, r: Rect2, color: Color) -> void:
 	if root == null:

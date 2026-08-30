@@ -1,6 +1,5 @@
 extends Node2D
 class_name FieldPresenter
-## 2.5D body: atlas sprite if present, Figure2D otherwise.
 
 var sheet: String = "ash_field"
 var figure: Figure2D
@@ -44,7 +43,10 @@ func _try_sprite() -> void:
 		if figure:
 			figure.visible = false
 
-func play_gait(gait: String, facing_left: bool) -> void:
+func play_gait(gait: String, facing_left: bool, world_y: float) -> void:
+	var s := DepthRig.scale_at(world_y)
+	scale = Vector2(s, s)
+	DepthRig.shade(self, world_y)
 	if sprite and sprite.sprite_frames and sprite.sprite_frames.has_animation(gait):
 		if sprite.animation != gait:
 			sprite.play(gait)
