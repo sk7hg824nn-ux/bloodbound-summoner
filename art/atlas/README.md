@@ -1,6 +1,7 @@
-Put TexturePacker Godot exports here.
+Ash field atlas is packed into scripts/art/art_ash_data.gd so Xogot Play
+does not depend on TexturePacker or a .import file.
 
-ash_field.png + ash_field.tpsheet
-akari_field.png + akari_field.tpsheet
+Optional loose PNGs may live in res://art/characters/ash/.
+ArtAsh.tex(name) checks those paths first, then the packed atlas.
 
-Desktop Godot + TexturePacker Importer then commit the generated .sprites folder.
+Names: idle_se idle_front idle_back idle_side walk_se_0 walk_se_1 run_se_0 run_se_1 child_idle_se face_close
