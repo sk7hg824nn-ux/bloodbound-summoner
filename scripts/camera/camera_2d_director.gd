@@ -28,6 +28,8 @@ func set_mode(next: Mode) -> void:
 
 func shot_to(pos: Vector2, z: float, _sec: float) -> void:
 	directed = true
+	position_smoothing_enabled = false
+	limit_enabled = false
 	_shot = pos
 	_shot_z = z
 
@@ -58,16 +60,18 @@ func _process(delta: float) -> void:
 		z = _shot_z
 		lerp_s = 3.2
 	elif target and is_instance_valid(target):
+		limit_enabled = true
+		position_smoothing_enabled = false
 		var rig: Dictionary = _rig()
 		_look = _look.lerp(rig["look"], 4.0 * delta)
 		dest = target.global_position + _look
 		z = float(rig["zoom"])
 		lerp_s = float(rig["lerp"])
+		if limit_enabled:
+			dest.x = clampf(dest.x, float(limit_left) + 80.0, float(limit_right) - 80.0)
+			dest.y = clampf(dest.y, float(limit_top) + 50.0, float(limit_bottom) - 50.0)
 	else:
 		return
-	if limit_enabled:
-		dest.x = clampf(dest.x, float(limit_left) + 80.0, float(limit_right) - 80.0)
-		dest.y = clampf(dest.y, float(limit_top) + 50.0, float(limit_bottom) - 50.0)
 	if _shake > 0.0:
 		dest += Vector2(randf_range(-1, 1), randf_range(-1, 1)) * _shake * 18.0
 		_shake = move_toward(_shake, 0.0, delta * 1.8)

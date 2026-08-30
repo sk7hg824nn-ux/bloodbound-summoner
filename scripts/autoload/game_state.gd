@@ -20,6 +20,7 @@ var flags: Dictionary = {}
 var inventory: Array[String] = ["Home Clothes"]
 var in_dialogue: bool = false
 var in_combat: bool = false
+var in_cutscene: bool = false
 
 func reset_run() -> void:
 	player_name = "Ash"
@@ -34,6 +35,9 @@ func reset_run() -> void:
 	location = "home"
 	day = 1
 	time_block = "morning"
+	in_dialogue = false
+	in_combat = false
+	in_cutscene = false
 	reset_combat_vitals()
 
 func reset_combat_vitals() -> void:

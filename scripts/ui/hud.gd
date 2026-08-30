@@ -27,7 +27,7 @@ func _ready() -> void:
 	refresh()
 
 func _process(delta: float) -> void:
-	if dialogue and not dialogue.visible and GameState.in_dialogue:
+	if dialogue and not dialogue.visible and GameState.in_dialogue and not GameState.in_cutscene:
 		GameState.in_dialogue = false
 	if _toast_time > 0.0:
 		_toast_time -= delta
@@ -84,5 +84,6 @@ func _advance() -> void:
 
 func _finish(choice_id: String) -> void:
 	dialogue.visible = false
-	GameState.in_dialogue = false
+	if not GameState.in_cutscene:
+		GameState.in_dialogue = false
 	EventBus.dialogue_finished.emit(choice_id)
