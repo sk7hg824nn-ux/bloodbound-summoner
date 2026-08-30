@@ -52,7 +52,7 @@ static func _key_magenta(img: Image) -> void:
 		var x := 0
 		while x < w:
 			var c := img.get_pixel(x, y)
-			if c.r > 0.70 and c.b > 0.70 and c.g < 0.35:
+			if c.r > 0.62 and c.b > 0.62 and c.g < 0.48:
 				img.set_pixel(x, y, Color(0, 0, 0, 0))
 			x += 1
 		y += 1
