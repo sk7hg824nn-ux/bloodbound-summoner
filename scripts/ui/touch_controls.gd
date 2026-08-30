@@ -26,3 +26,8 @@ func set_kit(mode: String) -> void:
 	ability.visible = combat
 	dodge.visible = true
 	interact.visible = true
+
+func _process(_delta: float) -> void:
+	var root := get_node_or_null("Root")
+	if root:
+		root.visible = GameState.in_cutscene == false
