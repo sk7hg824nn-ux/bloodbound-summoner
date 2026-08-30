@@ -26,6 +26,7 @@ func _ready() -> void:
 	camera.set_target(player)
 	camera.set_mode(Camera2DDirector.Mode.EXPLORE)
 	_fence_yard()
+	_dress_hall()
 	_spots()
 	_cut = CutsceneDirector.new()
 	_cut.camera = camera
@@ -41,8 +42,46 @@ func _ready() -> void:
 	EventBus.combat_ended.connect(_on_combat_ended)
 	if PactSystem.is_pacted("kitsune"):
 		_spawn_akari()
-	EventBus.toast.emit("The hall first. Bleachers. Watch someone else succeed.")
 	_objective()
+	if not GameState.has_flag("exam_failed") and not PactSystem.is_pacted("kitsune"):
+		_cut.play(ExamCutscene.beats(GameState.player_name))
+
+func _dress_hall() -> void:
+	for c in $World.get_children():
+		if c is ColorRect:
+			c.visible = false
+	var root := Node2D.new()
+	root.name = "HallDress"
+	$World.add_child(root)
+	$World.move_child(root, 0)
+	_plate(root, Rect2(-40, -40, 1280, 260), Color(0.10, 0.09, 0.12))
+	_plate(root, Rect2(-40, 180, 1280, 520), Color(0.16, 0.14, 0.16))
+	_plate(root, Rect2(-20, 220, 160, 280), Color(0.22, 0.16, 0.16))
+	_plate(root, Rect2(1040, 220, 160, 280), Color(0.22, 0.16, 0.16))
+	_plate(root, Rect2(40, 200, 140, 40), Color(0.28, 0.18, 0.18))
+	_plate(root, Rect2(40, 250, 140, 40), Color(0.26, 0.16, 0.16))
+	_plate(root, Rect2(40, 300, 140, 40), Color(0.24, 0.15, 0.15))
+	_plate(root, Rect2(1040, 200, 140, 40), Color(0.28, 0.18, 0.18))
+	_plate(root, Rect2(1040, 250, 140, 40), Color(0.26, 0.16, 0.16))
+	_plate(root, Rect2(1040, 300, 140, 40), Color(0.24, 0.15, 0.15))
+	_plate(root, Rect2(420, 80, 200, 90), Color(0.12, 0.10, 0.12))
+	var line := Line2D.new()
+	line.width = 4.0
+	line.default_color = Color(0.62, 0.12, 0.14, 0.95)
+	var pts := PackedVector2Array()
+	for i in 32:
+		var a := TAU * float(i) / 32.0
+		pts.append(Vector2(480, 420) + Vector2(cos(a), sin(a)) * 70.0)
+	pts.append(pts[0])
+	line.points = pts
+	root.add_child(line)
+
+func _plate(root: Node2D, r: Rect2, color: Color) -> void:
+	var n := ColorRect.new()
+	n.position = r.position
+	n.size = r.size
+	n.color = color
+	root.add_child(n)
 
 func _objective() -> void:
 	if PactSystem.is_pacted("kitsune"):
@@ -52,7 +91,7 @@ func _objective() -> void:
 	elif GameState.has_flag("exam_failed"):
 		Campaign.set_objective("A week of being the joke.")
 	else:
-		Campaign.set_objective("The examination hall. Watch the rite before you step in.")
+		Campaign.set_objective("Watch the hall. Someone else goes first.")
 
 func _spots() -> void:
 	_make_spot("circle", "Summoning Hall", "The bleachers are full.", Vector2(480, 420))
@@ -102,7 +141,7 @@ func _interact() -> void:
 			elif GameState.has_flag("exam_failed"):
 				EventBus.toast.emit("Not today. A week.")
 			else:
-				EventBus.toast.emit("Not yet. The hall is still watching.")
+				EventBus.toast.emit("The hall is still watching.")
 		"ring":
 			if not PactSystem.is_pacted("kitsune"):
 				EventBus.toast.emit("You have no pact.")
