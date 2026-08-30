@@ -6,6 +6,7 @@ extends Node2D
 
 var _near: Array[Interactable] = []
 var _seen: Dictionary = {}
+var _yard := Rect2(-20, 160, 1000, 560)
 
 func _ready() -> void:
 	player.add_to_group("player")
@@ -17,6 +18,7 @@ func _ready() -> void:
 	camera.set_target(player)
 	camera.set_mode(Camera2DDirector.Mode.EXPLORE)
 	_fence_yard()
+	PaintedWorld.drape($World, "yard", _yard)
 	touch.joystick_moved.connect(player.set_joystick)
 	touch.attack_pressed.connect(func(): EventBus.toast.emit("Not here. Not yet."))
 	touch.dodge_pressed.connect(func(): player.try_dodge())
@@ -32,7 +34,7 @@ func _ready() -> void:
 	_say(Prologue.morning(GameState.player_name))
 
 func _fence_yard() -> void:
-	var yard := Rect2(-20, 160, 1000, 560)
+	var yard := _yard
 	camera.set_bounds(yard)
 	var wall := StaticBody2D.new()
 	wall.collision_layer = 2
