@@ -31,6 +31,9 @@ func _ready() -> void:
 	_spots()
 	_cut = CutsceneDirector.new()
 	World25.bind_cut(_cut, camera, _stack)
+	_cut.actor = player
+	_cut.world = $World
+	_cut.entities = $Entities
 	add_child(_cut)
 	_cut.finished.connect(_on_exam_done)
 	touch.joystick_moved.connect(player.set_joystick)
@@ -45,7 +48,8 @@ func _ready() -> void:
 		_spawn_akari()
 	_objective()
 	if not GameState.has_flag("exam_failed") and not PactSystem.is_pacted("kitsune"):
-		_cut.play(ExamCutscene.beats(GameState.player_name))
+		player.global_position = Vector2(200, 430)
+		_cut.play(ExamCinematic.beats(GameState.player_name))
 
 func _objective() -> void:
 	if PactSystem.is_pacted("kitsune"):
@@ -96,7 +100,8 @@ func _interact() -> void:
 			if GameState.has_flag("exam_failed"):
 				EventBus.toast.emit("They already wrote insufficient.")
 			else:
-				_cut.play(ExamCutscene.beats(GameState.player_name))
+				player.global_position = Vector2(200, 430)
+				_cut.play(ExamCinematic.beats(GameState.player_name))
 		"woods":
 			if PactSystem.is_pacted("kitsune"):
 				_say({"speaker": "Akari", "lines": ["\"You already almost died. The sand is that way if you insist on repeating it.\""], "choices": []})
@@ -114,6 +119,7 @@ func _interact() -> void:
 
 func _on_exam_done() -> void:
 	GameState.set_flag("exam_failed")
+	camera.directed = false
 	camera.set_mode(Camera2DDirector.Mode.EXPLORE)
 	_say(FirstSummon.week_later())
 	_objective()
@@ -147,7 +153,8 @@ func _draw_rite(at: Vector2) -> void:
 	var pts := PackedVector2Array()
 	for i in 28:
 		var a := TAU * float(i) / 28.0
-		pts.append(at + Vector2(cos(a), sin(a)) * 38.0)
+		pts.append(at + Vector2(cos(a), sin(a) * 38.0)
+)
 	pts.append(pts[0])
 	line.points = pts
 	$World.add_child(line)
@@ -264,8 +271,9 @@ func _fence_yard() -> void:
 		wall.add_child(shape)
 
 func _physics_process(delta: float) -> void:
-	var pad := Vector2(18, 22)
-	player.global_position = player.global_position.clamp(_yard.position + pad, _yard.end - pad)
+	if not GameState.in_dialogue:
+		var pad := Vector2(18, 22)
+		player.global_position = player.global_position.clamp(_yard.position + pad, _yard.end - pad)
 	if akari and is_instance_valid(akari) and not _in_ring:
 		akari.follow(player, delta)
 	if ring and _in_ring:
