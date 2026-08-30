@@ -1,24 +1,19 @@
 # Academy ritual chamber — public fail
 
-Sheet 2026-08-30. This is where Ash fails in front of everyone.
+Stone hall. Blood circle in the floor. Altar. Pillars. Candles.
+AND bleachers. A crowd of students sits and watches.
 
-Not the courtyard lawn. Not the woods.
+The humiliation is not a private slate. It is an audience.
 
-## Room
-Underground / stone hall. 40 ft square. 22 ft ceiling. Threat: high.
-Worn pillars, iron, chains, blood cloth, skull altar, red candles.
-The circle is the floor. Unobstructed. Blood-red geometry. Faint glow when a rite runs.
+## The rite
+Circle already cut. Drop of his blood. Ask.
+They see him do it. Nothing they count stands up.
+Someone laughs like they practiced. He looks at the dirt.
 
-## The rite here
-Same locked price: draw the circle that is already cut into the stone, give a drop of his blood, ask.
-Everyone is watching. Nothing they count stands up. Insufficient. Joke.
-He keeps his eyes on the dirt.
+## Layout note
+Chamber floor stays clear. Bleachers rise on the sides or back wall.
+Proctor and circle in the middle. Students above.
+40 ft floor can stay. Bleachers are extra mass around it, not on the mark.
 
-## What this is not
-Not the woods rite. That is still a week later, alone, another circle and drop.
-Not necromancy class flavor unless a chapter says the academy harvests that way.
-Not a Year 1 combat arena. He has no pact in this room.
-
-## Later art
-2.5D painted layers: floor circle, pillars, altar, arch, candle light. Camera can push in on the drop.
-Placeholder courtyard slate can point here once the room exists on the phone.
+## Still not
+Not the woods. Not combat. No pact in this room.
