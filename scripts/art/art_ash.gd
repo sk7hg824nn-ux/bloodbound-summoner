@@ -1,12 +1,10 @@
 extends Object
 class_name ArtAsh
 ## Academy Ash field frames.
-## File PNGs first (academy tree, then legacy names).
-## Packed keyed JPEGs second. Packs load at runtime — never preload.
+## File PNGs first. Packed keyed JPEGs second. Packs load at runtime.
 
 static var _cache = {}
-static var _pack_a = null
-static var _pack_b = null
+static var _packs = []
 static var _packs_tried = false
 
 static func tex(name: String = "idle_se") -> Texture2D:
@@ -18,8 +16,6 @@ static func tex(name: String = "idle_se") -> Texture2D:
 		_cache[name] = from_file
 		return from_file
 	var packed = _packed_string(name)
-	if packed == "":
-		packed = _legacy_pack(name)
 	if packed == "":
 		return null
 	var raw := Marshalls.base64_to_raw(packed)
@@ -66,7 +62,7 @@ static func _alias(name: String) -> String:
 	return name
 
 static func has_art() -> bool:
-	return tex("three_quarter_front/idle/0") != null or tex("idle_se") != null
+	return tex("three_quarter_front/idle/0") != null or tex("front/idle/0") != null
 
 static func _file_tex(name: String) -> Texture2D:
 	var paths = [
@@ -92,34 +88,34 @@ static func _file_tex(name: String) -> Texture2D:
 
 static func _packed_string(name: String) -> String:
 	_ensure_packs()
-	if _pack_a != null:
-		var s = _pack_a.frame(name)
+	var i = 0
+	while i < _packs.size():
+		var s = _packs[i].frame(name)
 		if s != "":
 			return s
-	if _pack_b != null:
-		var s2 = _pack_b.frame(name)
-		if s2 != "":
-			return s2
+		i += 1
 	return ""
 
 static func _ensure_packs() -> void:
 	if _packs_tried:
 		return
 	_packs_tried = true
-	if ResourceLoader.exists("res://scripts/art/art_ash_pack_a.gd"):
-		_pack_a = load("res://scripts/art/art_ash_pack_a.gd")
-	if ResourceLoader.exists("res://scripts/art/art_ash_pack_b.gd"):
-		_pack_b = load("res://scripts/art/art_ash_pack_b.gd")
-
-static func _legacy_pack(name: String) -> String:
-	if ResourceLoader.exists("res://scripts/art/art_ash_data.gd") == false:
-		return ""
-	var data = load("res://scripts/art/art_ash_data.gd")
-	if data == null:
-		return ""
-	if data.has_method("frame"):
-		return data.frame(name)
-	return ""
+	var names = [
+		"art_ash_pack_front.gd",
+		"art_ash_pack_back.gd",
+		"art_ash_pack_left.gd",
+		"art_ash_pack_right.gd",
+		"art_ash_pack_three_quarter_front.gd",
+		"art_ash_pack_three_quarter_back.gd",
+	]
+	var i = 0
+	while i < names.size():
+		var path = "res://scripts/art/" + names[i]
+		if ResourceLoader.exists(path):
+			var packed = load(path)
+			if packed != null:
+				_packs.append(packed)
+		i += 1
 
 static func _key_magenta(img: Image) -> void:
 	var w := img.get_width()
