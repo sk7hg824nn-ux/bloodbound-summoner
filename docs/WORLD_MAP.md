@@ -1,43 +1,44 @@
 # The world — eight continents
 
-One world bound by blood. Seas: Frigid North, Endless Sea, Celestial Ocean, Southern Wastes.
+One world bound by blood.
+Seas: Frigid North / North Sea, Western Sea, Southern Sea, Endless Sea, Celestial Ocean, Black Sea, Roar Sea, Southern Wastes.
 
 ## 1. Erathma — humans
-Cradle of kingdoms, faith, order.
-Northwatch. Westgate. Silverkeep. Kingsbridge.
+Capital: **Westgate**. Seat of the Council of Kings.
+Also: Northreach, Frosthold, Silver Plains, Rivendale, Dawnwall, Kingsbridge, Southfield, Riverdale.
 
 ## 2. Draconia — dragon kin
-Fire, scales, honor.
-Draktharion. Scorchspire. Vyrkaza. Ashenhold.
+Capital: **Draktharion**. Seat of the Dragon Kings.
+Also: Volkrath, Ashen Peaks, Scorchspire, Molten Fields, Crimson Bay, Vyrkaza, Khargok Pass, Ashenhold, Scalebreak Wastes, Dragon's Spine, Drakon's Maw.
 
 ## 3. Kitasa — kitsune
-Spirits, old manners, beauty that hides teeth.
-Inari-Kyo. Moonwhisp. Sakura Falls. Foxshade.
-The lost court from Akari's history sits here or under it. Do not flatten Kitasa into a festival island.
+Capital: **Inxyo**. Great Kitsune Clan.
+Also: Sakura Falls, Hidden Veil, Spiritwind, Kitsune Coins, Celestial Peaks, Moonwhisp, Chimesong Grove, Whitetail Wood, Silken Strait.
+Inari-Kyo from the first painting is treated as another name or a shrine city, not a second capital.
+Kitasa is not only festivals. Akari's lost court belongs here or under it.
 
 ## 4. Lumora — dark elves
-Night, intrigue, power.
-Nightrise. Duskveil. Shadeholme. Velmoria.
+Capital: **Velmoria**. Matriarchs of Night.
+Also: Duskveil, Nightsong Forest, Shadowspire, Starfall Citadel, Obsidian Gate, Forgotten Depths.
 
 ## 5. Narigoth — dwarves
-Stone, steel, craft.
-Kragghelm. Irondeep. Stonehome. Boulderhold.
+Capital: **Narigoth** (city in the stone).
+Also: Grimstone Peaks, Irondeep, Stonehall Gate, Great Anvil, Boulderhold, Kragmere, Stoneforge, Undermines, Rockward.
 
 ## 6. Ernholt — halflings
-Fields, festivals.
-Greenmeadow. Meadowbrook. Brighthaven. Hearthfield.
+Capital: **Ernholt**.
+Also: Brighthaven, Meadowbrook, Golden Fields, Riverbend, Acorn Hollow, Whisperend, Hayvale, The Marals, Flowerfield, Sunter River.
 
 ## 7. Destra — beast folk
-Wild, instinct.
-Fangwood. Clawspire. Beastwatch. Priderock.
+Capital: **Destra**.
+Also: Clawrise, Beastwatch, Howling Wilds, Racetang, Fangrith Jungle, Hunter's Run, Thunderock, Great Plains.
 
 ## 8. Babathia — bunny folk
-Dreams and fantasy.
-Fluftale. Carrotmead. Hopshire. Dreamwhisp.
-Map copy says innocence. Breana is not innocent. Homeland flavor is not her kit.
+Capital: **Dreamwhisk**.
+Also: Hopshire, Candyclot, Meadowlilt, Moonbin Glen, Fluftale, Berrylunch, Tumblehop Hills.
+Map copy says innocence. That is homeland advertising. Not Breana.
 
 ## Not placed yet
-The academy hall.
-The castle that burned.
+The academy.
+The burned castle.
 Ash's blood court.
-Those wait on story, not on this painting.
