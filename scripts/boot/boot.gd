@@ -4,22 +4,30 @@ var _confirm := -1
 
 func _ready() -> void:
 	$Center/Start.visible = false
+	$Center/ContinueHint.text = "Empty slot = new life. Occupied = continue or delete."
+	var slots := $Center.get_node_or_null("Slots") as VBoxContainer
+	if slots == null:
+		slots = VBoxContainer.new()
+		slots.name = "Slots"
+		slots.add_theme_constant_override("separation", 10)
+		$Center.add_child(slots)
 	_paint()
 
+func _slots() -> VBoxContainer:
+	return $Center/Slots as VBoxContainer
+
 func _paint() -> void:
-	var box := $Center
-	for c in box.get_children():
-		if c.name.begins_with("Row") or c.name == "HintFresh":
-			c.queue_free()
-	$Center/ContinueHint.text = "Empty slot = new life. Occupied = continue or delete."
+	var slots := _slots()
+	for c in slots.get_children():
+		slots.remove_child(c)
+		c.free()
 	var last := SaveSystem.current_slot
 	for i in SaveSystem.SLOT_COUNT:
 		var row := HBoxContainer.new()
-		row.name = "Row%d" % i
-		row.custom_minimum_size = Vector2(0, 44)
 		row.add_theme_constant_override("separation", 8)
 		var info := SaveSystem.peek(i)
 		var main := Button.new()
+		main.custom_minimum_size = Vector2(0, 44)
 		main.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		if info.is_empty():
 			main.text = "Slot %d  —  empty" % (i + 1)
@@ -33,14 +41,11 @@ func _paint() -> void:
 			main.pressed.connect(_load_in.bind(i))
 			var wipe := Button.new()
 			wipe.custom_minimum_size = Vector2(88, 44)
-			if _confirm == i:
-				wipe.text = "Sure?"
-			else:
-				wipe.text = "Delete"
+			wipe.text = "Sure?" if _confirm == i else "Delete"
 			wipe.pressed.connect(_wipe.bind(i))
 			row.add_child(main)
 			row.add_child(wipe)
-		box.add_child(row)
+		slots.add_child(row)
 
 func _new_in(slot: int) -> void:
 	SaveSystem.current_slot = slot
