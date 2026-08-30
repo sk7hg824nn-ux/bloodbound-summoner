@@ -2,10 +2,16 @@ extends Node2D
 
 func _ready() -> void:
 	GameState.era = "memory"
-	GameState.location = "before"
-	Campaign.chapter_id = "pro0_memory"
+	GameState.change_location("before")
 	Campaign.set_objective("He will not be told who he is.")
+	var plate := Sprite2D.new()
+	plate.centered = false
+	plate.position = Vector2.ZERO
+	plate.texture = OriginArt.tex("castle")
+	add_child(plate)
+	move_child(plate, 0)
 	var cut := CutsceneDirector.new()
+	cut.plate = plate
 	add_child(cut)
 	cut.finished.connect(_to_academy)
 	cut.play(OriginCutscene.beats(GameState.player_name))
@@ -13,6 +19,6 @@ func _ready() -> void:
 func _to_academy() -> void:
 	GameState.set_flag("prologue_done")
 	GameState.era = "academy"
-	GameState.location = "hall"
+	GameState.change_location("hall")
 	SaveSystem.write()
 	get_tree().change_scene_to_file("res://scenes/world/Academy.tscn")

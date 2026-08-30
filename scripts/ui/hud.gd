@@ -22,6 +22,7 @@ func _ready() -> void:
 	toast_label.modulate.a = 0.0
 	EventBus.toast.connect(show_toast)
 	EventBus.dialogue_requested.connect(open_dialogue)
+	EventBus.location_changed.connect(func(_id): refresh())
 	Campaign.objective_changed.connect(func(t): obj_label.text = t)
 	refresh()
 
@@ -38,6 +39,9 @@ func refresh() -> void:
 	loc_label.text = GameState.location
 	bond_label.text = GameState.era
 	obj_label.text = Campaign.objective
+	var top := $Root/Top
+	if top:
+		top.visible = GameState.era != "memory"
 
 func show_toast(message: String) -> void:
 	toast_label.text = message

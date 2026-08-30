@@ -2,11 +2,13 @@ extends Node
 class_name CutsceneDirector
 
 signal finished
+signal plate_changed(id: String)
 var _beats: Array = []
 var _i := 0
 var _playing := false
 var camera: Camera2DDirector
 var stack: LayerStack
+var plate: Sprite2D
 
 func _ready() -> void:
 	EventBus.dialogue_finished.connect(_on_line)
@@ -34,6 +36,12 @@ func _step() -> void:
 	_i += 1
 	var kind := String(beat.get("type", "say"))
 	match kind:
+		"plate":
+			var id := String(beat.get("id", "black"))
+			if plate:
+				plate.texture = OriginArt.tex(id)
+			plate_changed.emit(id)
+			_step()
 		"cam":
 			if camera:
 				camera.set_mode(beat.get("mode", Camera2DDirector.Mode.EXPLORE))
@@ -45,9 +53,7 @@ func _step() -> void:
 			EventBus.toast.emit(String(beat.get("text", "")))
 			_step()
 		_:
-			var speaker := String(beat.get("speaker", ""))
-			var lines: Array = beat.get("lines", [])
-			EventBus.dialogue_requested.emit(speaker, lines, [{"id": "cs_next", "text": "Continue"}])
+			EventBus.dialogue_requested.emit(String(beat.get("speaker", "")), beat.get("lines", []), [{"id": "cs_next", "text": "Continue"}])
 
 func _on_line(choice_id: String) -> void:
 	if not _playing:
