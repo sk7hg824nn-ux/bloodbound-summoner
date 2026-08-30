@@ -30,6 +30,7 @@ func _ready() -> void:
 	_spots()
 	_cut = CutsceneDirector.new()
 	_cut.camera = camera
+	_cut.stack = $World.get_node_or_null("LayerStack") as LayerStack
 	add_child(_cut)
 	_cut.finished.connect(_on_exam_done)
 	touch.joystick_moved.connect(player.set_joystick)
@@ -47,41 +48,8 @@ func _ready() -> void:
 		_cut.play(ExamCutscene.beats(GameState.player_name))
 
 func _dress_hall() -> void:
-	for c in $World.get_children():
-		if c is ColorRect:
-			c.visible = false
-	var root := Node2D.new()
-	root.name = "HallDress"
-	$World.add_child(root)
-	$World.move_child(root, 0)
-	_plate(root, Rect2(-40, -40, 1280, 260), Color(0.10, 0.09, 0.12))
-	_plate(root, Rect2(-40, 180, 1280, 520), Color(0.16, 0.14, 0.16))
-	_plate(root, Rect2(-20, 220, 160, 280), Color(0.22, 0.16, 0.16))
-	_plate(root, Rect2(1040, 220, 160, 280), Color(0.22, 0.16, 0.16))
-	_plate(root, Rect2(40, 200, 140, 40), Color(0.28, 0.18, 0.18))
-	_plate(root, Rect2(40, 250, 140, 40), Color(0.26, 0.16, 0.16))
-	_plate(root, Rect2(40, 300, 140, 40), Color(0.24, 0.15, 0.15))
-	_plate(root, Rect2(1040, 200, 140, 40), Color(0.28, 0.18, 0.18))
-	_plate(root, Rect2(1040, 250, 140, 40), Color(0.26, 0.16, 0.16))
-	_plate(root, Rect2(1040, 300, 140, 40), Color(0.24, 0.15, 0.15))
-	_plate(root, Rect2(420, 80, 200, 90), Color(0.12, 0.10, 0.12))
-	var line := Line2D.new()
-	line.width = 4.0
-	line.default_color = Color(0.62, 0.12, 0.14, 0.95)
-	var pts := PackedVector2Array()
-	for i in 32:
-		var a := TAU * float(i) / 32.0
-		pts.append(Vector2(480, 420) + Vector2(cos(a), sin(a)) * 70.0)
-	pts.append(pts[0])
-	line.points = pts
-	root.add_child(line)
-
-func _plate(root: Node2D, r: Rect2, color: Color) -> void:
-	var n := ColorRect.new()
-	n.position = r.position
-	n.size = r.size
-	n.color = color
-	root.add_child(n)
+	var stack := LayerStack.attach($World)
+	stack.dress_hall()
 
 func _objective() -> void:
 	if PactSystem.is_pacted("kitsune"):
