@@ -1,12 +1,12 @@
 extends Node
 class_name CutsceneDirector
-## Reusable. Beats in, dialogue and camera out. No combat.
 
 signal finished
 var _beats: Array = []
 var _i := 0
 var _playing := false
 var camera: Camera2DDirector
+var stack: LayerStack
 
 func _ready() -> void:
 	EventBus.dialogue_finished.connect(_on_line)
@@ -16,6 +16,8 @@ func play(beats: Array) -> void:
 	_i = 0
 	_playing = true
 	GameState.in_dialogue = true
+	if stack:
+		stack.freeze()
 	_step()
 
 func _step() -> void:
@@ -24,6 +26,8 @@ func _step() -> void:
 	if _i >= _beats.size():
 		_playing = false
 		GameState.in_dialogue = false
+		if stack:
+			stack.thaw()
 		finished.emit()
 		return
 	var beat: Dictionary = _beats[_i]
