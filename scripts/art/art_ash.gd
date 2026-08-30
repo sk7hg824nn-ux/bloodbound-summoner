@@ -107,6 +107,8 @@ static func _ensure_packs() -> void:
 		"art_ash_pack_right.gd",
 		"art_ash_pack_three_quarter_front.gd",
 		"art_ash_pack_three_quarter_back.gd",
+		"art_ash_pack_core.gd",
+		"art_ash_pack_mini.gd",
 	]
 	var i = 0
 	while i < names.size():
