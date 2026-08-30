@@ -1,9 +1,7 @@
 # CHANGELOG.md
 
 ## 2026-08-30
-- SaveSystem v1: user://bloodbound_save.json. Boot Continue. New game clears save.
-- Hall uses HallArt painted plate (stone, bleachers, blood ring). res://art/hall.png overrides if present.
-- Locked post-Erathma seven-kingdom map. Land remains livable.
-- Prologue cinematic replaces playable childhood.
-- Exam cutscene: griffin succeeds, Ash fails twice.
-- Parallax2D LayerStack + freeze during cutscenes.
+- Three save slots (`user://bloodbound_slot_0..2.json`). Index remembers last slot.
+- Old single `bloodbound_save.json` migrates into slot 1 if slot 1 is empty.
+- Boot lists empty / occupied. Empty → create. Occupied → continue.
+- HallArt plate. Parallax freeze. Prologue cinematic. Post-Erathma map locked.
