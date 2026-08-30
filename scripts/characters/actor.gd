@@ -26,6 +26,8 @@ func _ready() -> void:
 	z_as_relative = false
 	field = FieldPresenter.attach(self, field_sheet, figure_kind, body_color)
 	figure = field.figure if field else Figure2D.attach(self, figure_kind, body_color)
+	if field:
+		field.set_era(GameState.era)
 	if label:
 		label.text = display_name
 	_refresh_hp()
@@ -42,7 +44,7 @@ func apply_velocity(dir: Vector2) -> void:
 	z_index = int(global_position.y)
 	var left := facing.x < 0.0
 	if field:
-		field.play_gait(gait, left, global_position.y)
+		field.play_gait(gait, left, global_position.y, facing.y)
 		field.tick(get_physics_process_delta_time())
 elif figure:
 		figure.set_facing(facing)
