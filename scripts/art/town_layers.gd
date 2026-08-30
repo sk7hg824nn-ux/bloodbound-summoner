@@ -81,7 +81,15 @@ static func _file_tex(which: String) -> Texture2D:
 
 
 static func _packed(which: String) -> String:
-	var path = "res://scripts/art/art_town_%s.gd" % which
+	if which == "mid":
+		var a = _pack_file("res://scripts/art/art_town_mid_a.gd")
+		var b = _pack_file("res://scripts/art/art_town_mid_b.gd")
+		if a != "" or b != "":
+			return a + b
+	return _pack_file("res://scripts/art/art_town_%s.gd" % which)
+
+
+static func _pack_file(path: String) -> String:
 	if ResourceLoader.exists(path) == false:
 		return ""
 	var scr = load(path)
