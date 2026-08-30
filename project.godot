@@ -5,7 +5,7 @@ config_version=5
 [application]
 config/name="Bloodbound Summoner"
 config/description="Illustrated 2.5D. Landscape mobile. Player brick."
-config/version="0.3.0"
+config/version="0.4.0"
 run/main_scene="res://scenes/boot/Boot.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
@@ -19,6 +19,7 @@ EventBus="*res://scripts/autoload/event_bus.gd"
 StoryDB="*res://scripts/autoload/story_db.gd"
 Campaign="*res://scripts/autoload/campaign.gd"
 Bricks="*res://scripts/autoload/bricks.gd"
+SaveSystem="*res://scripts/autoload/save_system.gd"
 
 [display]
 window/size/viewport_width=844
