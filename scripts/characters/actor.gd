@@ -8,6 +8,7 @@ class_name Actor
 @export var team: String = "player"
 @export var body_color: Color = Color(0.7, 0.7, 0.75)
 @export var figure_kind: String = "human"
+@export var field_sheet: String = "ash_field"
 
 @onready var body: Polygon2D = get_node_or_null("Body")
 @onready var label: Label = get_node_or_null("NameLabel")
@@ -16,29 +17,35 @@ class_name Actor
 var invuln_time: float = 0.0
 var facing: Vector2 = Vector2.RIGHT
 var figure: Figure2D
+var field: FieldPresenter
 
 func _ready() -> void:
 	hp = max_hp
 	if body:
 		body.visible = false
-	figure = Figure2D.attach(self, figure_kind, body_color)
+	field = FieldPresenter.attach(self, field_sheet, figure_kind, body_color)
+	figure = field.figure if field else Figure2D.attach(self, figure_kind, body_color)
 	if label:
 		label.text = display_name
 	_refresh_hp()
 
 func apply_velocity(dir: Vector2) -> void:
+	var gait := "idle"
 	if dir.length() > 0.1:
 		facing = dir.normalized()
 		velocity = facing * move_speed
-		if figure:
-			figure.set_facing(facing)
-			figure.walking = true
+		gait = "run" if move_speed > 200.0 else "walk"
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, move_speed * 6.0 * get_physics_process_delta_time())
-		if figure:
-			figure.walking = false
 	move_and_slide()
-	if figure:
+	var left := facing.x < 0.0
+	if field:
+		field.play_gait(gait, left)
+		field.tick(get_physics_process_delta_time())
+elif figure:
+		figure.set_facing(facing)
+		figure.walking = gait != "idle"
+		figure.gait = gait
 		figure.tick(get_physics_process_delta_time())
 
 func take_hit(amount: int, _from: Node = null) -> void:
