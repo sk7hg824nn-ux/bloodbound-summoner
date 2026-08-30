@@ -1,28 +1,31 @@
 # Akari — visual target
 
-Reference sheet provided 2026-08-30. This is look, not a rename.
+Sheet 2026-08-30. This sheet replaces the white shrine / Tamamo board as the look.
 
-Her name is Akari. Not Tamamo.
+## Who
+First summon. Age 18. Height 5'6". Loyal to Ash. Calm, wise, teasing, protective.
+Loves tea, silence, Ash. Hates arrogance and betrayal.
+
+Quote:
+"You called to me with blood that no one else dared to touch. That makes you... mine."
 
 ## Palette
-- Hair / fur: lavender to violet
-- Eyes: pale lilac
-- Robes: white over deep purple
-- Accents: gold thread, tassels, spirit-mark jewelry
-- Flame: violet foxfire
+Hair deep violet. Eyes lilac. Skin warm. Outfit black-violet. Gold thread. Foxflame purple-white.
+White-tipped tail fur.
 
-## Body language
-Shrine-cut robes. Fox ears. Long hair. Detached amusement on the face. That matches pride + tsundere, not a pet.
+## Layers for painted 2D
+Shadow, Body, Outfit, Arm L, Arm R, Head, Hair, Ears, Tails
+Same Player-adjacent Figure2D idea. Not a mesh.
 
 ## Tails
-The sheet shows nine. That is the end of her line, not Year 1.
+Meeting: ONE tail.
+Second tail: bond path already locked.
+The sheet's multi-tail cluster is late.
 
-First meeting: one tail.
-Second tail: the bond path already locked.
-Nine: late. Earned. Visible proof, not a damage stat.
+## What we do not take
+- Pixel / chibi strip. Art lock is illustrated 2.5D, not pixel art.
+- Spirit / Dark as a type chart. Visual of the flame only until a chapter names it.
+- "Summoness" as her job. She is the summon. He is the summoner.
+- Nine tails on day one.
 
-## What this is not
-Not a LoRA.
-Not a 3D mesh.
-Not the phone sprite yet.
-Painted 2D layers will follow this sheet when art files go in `art/` as real PNGs.
+Not on the phone yet except placeholder polygons.
