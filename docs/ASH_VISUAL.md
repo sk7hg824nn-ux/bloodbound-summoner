@@ -1,50 +1,41 @@
 # Ash — visual target (academy)
 
-Reference sheets + TRUE 2.5D board (2026-08-30).
-Academy look. Not childhood.
+Reference locked 2026-08-30. Academy look. Not childhood.
 
 ## Sheet facts
 - Height 6'3". Age 19. Lean / athletic.
-- Role: summoner. Era: academy.
-- Alignment on the sheet: Neutral Good. Personality in story still timid at the first rite.
+- White hair, green tips. Green eyes.
+- Black long coat, gold filigree, torn emerald lining, black boots.
 
-## Palette
-- Hair: white with green streak
-- Eyes: green
-- Coat: black, long, gold/green filigree, ragged hem
-- Lining: vivid green
-- Body: black layers, belts, gloves, boots
+## Production field set
 
-## Production facings (board)
-FRONT, BACK, LEFT, RIGHT, 3/4 FRONT, 3/4 BACK.
-LEFT and RIGHT are painted separately when the coat is asymmetric.
-flip_h is a placeholder only.
+`res://art/characters/ash/academy/`
 
-## Production animation states (board)
-IDLE, WALK, RUN, CAST, ATTACK, DODGE.
-FieldPresenter also reserves hit / summon / death so clips can drop in later.
-Ash does not fight empty-handed. ATTACK on Ash is UNDEFINED until canon gives him a weapon that is not a summon. CAST is the rite / pact motion.
+Six illustrated views. Each is a unique drawing.
 
-## Field implementation
-Illustrated frames live in `ArtAsh` / packed atlas `art_ash_data.gd`.
-`FieldPresenter` draws them with `AnimatedSprite2D`.
-`Figure2D` polygon layers stay attached as a hidden fallback only.
+1. front
+2. back
+3. left
+4. right
+5. three_quarter_front
+6. three_quarter_back
 
-Current placeholder frame names:
-- idle_se, idle_front, idle_back, idle_side
-- walk_se_0, walk_se_1
-- run_se_0, run_se_1
-- child_idle_se
-- face_close (cinematic push-in / CLOSE SHOT)
+Clips under each view:
 
-Depth: `DepthRig.scale_at(y) * BASE` on the Field node. Do not scale Ash per shot.
+- idle — breathing / cloth frames
+- walk — locomotion frames
+- run — faster locomotion frames
 
-## Layers (Figure2D fallback)
-Shadow, Coat, Lining, Arm, Head, Hair
+`FieldPresenter` picks `gait + view` (`walk_left`, `idle_back`, `run_three_quarter_front`).
+It does **not** use `flip_h` as the left/right solution.
 
-## Face
-The board's smirk / focused faces are later Ash.
-Year 1 woods rite still plays timid even if the coat looks like this.
+`ArtAsh` load order:
 
-## What this is not
-Not a LoRA. Not a MeshInstance. Not the character-sheet image used raw as a sprite.
+1. academy PNG
+2. legacy PNG (`res://art/characters/ash/<name>.png`)
+3. runtime packed keyed JPEG (`art_ash_pack_a.gd` / `_b.gd`)
+
+`Figure2D` stays attached and hidden as fallback only.
+
+Depth: `DepthRig.scale_at(y) * FieldPresenter.BASE` (0.62).
+Y-sort: Actor `z_index = int(global_position.y)`.

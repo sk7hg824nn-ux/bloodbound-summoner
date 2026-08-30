@@ -1,8 +1,7 @@
 extends Node2D
 class_name FieldPresenter
-## Illustrated 2.5D field body for an Actor.
-## Depth comes from DepthRig (Y scale + shade). This node only
-## swaps illustrated frames. Figure2D stays attached as fallback.
+## Illustrated 2.5D field body.
+## Directional state picks a unique view. DepthRig handles Y scale.
 
 var sheet = "ash_field"
 var figure
@@ -10,8 +9,18 @@ var sprite
 var shadow
 var _era = "academy"
 var _pose = ""
-var _last_dir = "se"
+var _dir = "three_quarter_front"
+var _gait = "idle"
 const BASE = 0.62
+
+const DIRS = [
+	"front",
+	"back",
+	"left",
+	"right",
+	"three_quarter_front",
+	"three_quarter_back",
+]
 
 static func attach(host, sheet_name, kind, color):
 	var existing = host.get_node_or_null("Field")
@@ -37,9 +46,9 @@ func set_pose(pose) -> void:
 	if _pose == "face" or _pose == "close":
 		var t = ArtAsh.tex("face_close")
 		if t != null and sprite.sprite_frames:
-			if sprite.sprite_frames.has_animation("idle"):
-				sprite.sprite_frames.set_frame("idle", 0, t)
-				sprite.play("idle")
+			if sprite.sprite_frames.has_animation("idle_front"):
+				sprite.sprite_frames.set_frame("idle_front", 0, t)
+				sprite.play("idle_front")
 
 func _build_shadow() -> void:
 	if shadow != null:
@@ -53,69 +62,58 @@ func _build_shadow() -> void:
 	shadow.z_index = -2
 	add_child(shadow)
 
-func _tex(name):
-	return ArtAsh.tex(name)
+func _anim_name(gait, dir_name) -> String:
+	return "%s_%s" % [gait, dir_name]
 
 func _build_sprite() -> void:
 	if sprite != null:
 		sprite.queue_free()
 		sprite = null
 	var frames = SpriteFrames.new()
-	var clips = ["idle", "walk", "run", "dodge", "attack", "hit", "cast", "summon", "damage", "death"]
-	var i = 0
-	while i < clips.size():
-		frames.add_animation(clips[i])
-		frames.set_animation_loop(clips[i], clips[i] == "idle" or clips[i] == "walk" or clips[i] == "run")
-		i += 1
-	frames.set_animation_speed("idle", 6.0)
-	frames.set_animation_speed("walk", 8.0)
-	frames.set_animation_speed("run", 10.0)
 	var child = (_era == "child" or _era == "memory")
+	var first = null
 	if child:
-		var t = _tex("child_idle_se")
+		frames.add_animation("idle_front")
+		frames.set_animation_loop("idle_front", true)
+		frames.set_animation_speed("idle_front", 6.0)
+		var t = ArtAsh.tex("child_idle_se")
 		if t != null:
-			frames.add_frame("idle", t)
-			frames.add_frame("walk", t)
-			frames.add_frame("run", t)
+			frames.add_frame("idle_front", t)
+			first = t
 	else:
-		var idle = _tex("idle_se")
-		var front = _tex("idle_front")
-		var back = _tex("idle_back")
-		var side = _tex("idle_side")
-		var w0 = _tex("walk_se_0")
-		var w1 = _tex("walk_se_1")
-		var r0 = _tex("run_se_0")
-		var r1 = _tex("run_se_1")
-		if idle != null:
-			frames.add_frame("idle", idle)
-		if w0 != null:
-			frames.add_frame("walk", w0)
-		if w1 != null:
-			frames.add_frame("walk", w1)
-		elif idle != null:
-			frames.add_frame("walk", idle)
-		if r0 != null:
-			frames.add_frame("run", r0)
-		if r1 != null:
-			frames.add_frame("run", r1)
-		elif w0 != null:
-			frames.add_frame("run", w0)
-		set_meta("front", front)
-		set_meta("back", back)
-		set_meta("side", side)
-		set_meta("idle", idle)
-		set_meta("se", idle)
-	var idle0 = null
-	if frames.get_frame_count("idle") > 0:
-		idle0 = frames.get_frame_texture("idle", 0)
-	if idle0 != null:
-		var extras = ["dodge", "attack", "hit", "cast", "summon", "damage", "death"]
-		var e = 0
-		while e < extras.size():
-			if frames.get_frame_count(extras[e]) <= 0:
-				frames.add_frame(extras[e], idle0)
-			e += 1
-	if frames.get_frame_count("idle") <= 0:
+		var d = 0
+		while d < DIRS.size():
+			var dir_name = DIRS[d]
+			var gaits = ["idle", "walk", "run"]
+			var g = 0
+			while g < gaits.size():
+				var gait = gaits[g]
+				var clip = ArtAsh.clip(dir_name, gait)
+				var an = _anim_name(gait, dir_name)
+				frames.add_animation(an)
+				frames.set_animation_loop(an, true)
+				var spd = 6.0
+				if gait == "walk":
+					spd = 8.0
+				elif gait == "run":
+					spd = 10.0
+				frames.set_animation_speed(an, spd)
+				var i = 0
+				while i < clip.size():
+					frames.add_frame(an, clip[i])
+					if first == null:
+						first = clip[i]
+					i += 1
+				g += 1
+			d += 1
+	var extras = ["dodge", "attack", "hit", "cast", "summon", "damage", "death"]
+	var e = 0
+	while e < extras.size():
+		frames.add_animation(extras[e])
+		if first != null:
+			frames.add_frame(extras[e], first)
+		e += 1
+	if first == null:
 		if figure != null:
 			figure.visible = true
 		return
@@ -124,25 +122,28 @@ func _build_sprite() -> void:
 	sprite.sprite_frames = frames
 	sprite.texture_filter = 1
 	sprite.centered = true
-	var foot = -18.0
-	if idle0 != null:
-		foot = -float(idle0.get_height()) * 0.48
+	var foot = -float(first.get_height()) * 0.48
 	sprite.offset = Vector2(0, foot)
-	sprite.play("idle")
+	var start = "idle_three_quarter_front"
+	if frames.has_animation(start) == false:
+		start = "idle_front"
+	sprite.play(start)
 	add_child(sprite)
 	if figure != null:
 		figure.visible = false
 
-func _dir_tex(face_y, gait):
-	if gait != "idle":
-		return null
-	if abs(face_y) > 0.55:
-		if face_y < 0.0:
-			return get_meta("back") if has_meta("back") else null
-		return get_meta("front") if has_meta("front") else null
-	if abs(face_y) < 0.28 and has_meta("side"):
-		return get_meta("side")
-	return get_meta("idle") if has_meta("idle") else null
+func resolve_dir(facing_left, face_y) -> String:
+	if face_y <= -0.58:
+		return "back"
+	if face_y >= 0.58:
+		return "front"
+	if abs(face_y) <= 0.32:
+		if facing_left:
+			return "left"
+		return "right"
+	if face_y < 0.0:
+		return "three_quarter_back"
+	return "three_quarter_front"
 
 func play_gait(gait, facing_left, world_y, face_y = 0.0) -> void:
 	var s = DepthRig.scale_at(world_y) * BASE
@@ -157,22 +158,31 @@ func play_gait(gait, facing_left, world_y, face_y = 0.0) -> void:
 			figure.set_facing(Vector2(-1.0 if facing_left else 1.0, face_y))
 			DepthRig.apply(figure, world_y, -1.0 if facing_left else 1.0)
 		return
-	var use = gait
-	if sprite.sprite_frames.has_animation(use) == false:
-		use = "idle"
 	if _pose == "face" or _pose == "close":
-		use = "idle"
-	if sprite.animation != use:
-		sprite.play(use)
-	sprite.flip_h = facing_left
-	if _pose == "":
-		var swap = _dir_tex(face_y, gait)
-		if swap != null and gait == "idle":
-			sprite.sprite_frames.set_frame("idle", 0, swap)
+		if sprite.animation != "idle_front":
+			sprite.play("idle_front")
+		return
+	var use_gait = gait
+	if use_gait != "idle" and use_gait != "walk" and use_gait != "run":
+		if sprite.sprite_frames.has_animation(use_gait):
+			if sprite.animation != use_gait:
+				sprite.play(use_gait)
+			return
+		use_gait = "idle"
+	_dir = resolve_dir(facing_left, face_y)
+	_gait = use_gait
+	var an = _anim_name(use_gait, _dir)
+	if sprite.sprite_frames.has_animation(an) == false:
+		an = _anim_name("idle", _dir)
+	if sprite.sprite_frames.has_animation(an) == false:
+		an = "idle_three_quarter_front"
+	if sprite.animation != an:
+		sprite.play(an)
+	sprite.flip_h = false
 
-func tick(delta) -> void:
+func tick(_delta) -> void:
 	if figure != null and figure.visible:
-		figure.tick(delta)
-	elif sprite != null and sprite.animation == "idle":
+		figure.tick(_delta)
+	elif sprite != null and _gait == "idle":
 		var b = sin(Time.get_ticks_msec() * 0.004) * 0.6
 		sprite.position.y = b
