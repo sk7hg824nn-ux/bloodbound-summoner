@@ -2,9 +2,9 @@ extends Node
 signal chapter_started(chapter_id: String, title: String)
 signal objective_changed(text: String)
 
-var chapter_id: String = "pro0_home"
+var chapter_id: String = "pro0_memory"
 var act: int = 0
-var objective: String = "Be a child. Talk to your mother."
+var objective: String = "He will not be told who he is."
 var journal: Array[Dictionary] = []
 
 func current() -> Dictionary:
@@ -32,7 +32,7 @@ func set_objective(text: String) -> void:
 	objective_changed.emit(text)
 
 func reset() -> void:
-	chapter_id = "pro0_home"
+	chapter_id = "pro0_memory"
 	act = 0
-	objective = "Be a child. Talk to your mother."
+	objective = "He will not be told who he is."
 	journal.clear()
