@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://childhood01"]
 
 [ext_resource type="Script" path="res://scripts/world/childhood.gd" id="1_ch"]
-[ext_resource type="PackedScene" path="res://scenes/characters/Player.tscn" id="2_pl"]
-[ext_resource type="PackedScene" path="res://scenes/ui/HUD.tscn" id="3_hud"]
-[ext_resource type="PackedScene" path="res://scenes/ui/TouchControls.tscn" id="4_touch"]
+[ext_resource type="PackedScene" uid="uid://player0001" path="res://scenes/characters/Player.tscn" id="2_pl"]
+[ext_resource type="PackedScene" uid="uid://hud0000001" path="res://scenes/ui/HUD.tscn" id="3_hud"]
+[ext_resource type="PackedScene" uid="uid://touch00001" path="res://scenes/ui/TouchControls.tscn" id="4_touch"]
 [ext_resource type="Script" path="res://scripts/camera/camera_2d_director.gd" id="5_cam"]
 [ext_resource type="Script" path="res://scripts/world/interactable.gd" id="6_int"]
 
@@ -41,6 +41,13 @@ offset_right = 280.0
 offset_bottom = 400.0
 color = Color(0.55, 0.38, 0.26, 1)
 
+[node name="Door" type="ColorRect" parent="World"]
+offset_left = 140.0
+offset_top = 320.0
+offset_right = 190.0
+offset_bottom = 400.0
+color = Color(0.28, 0.18, 0.12, 1)
+
 [node name="MotherSprite" type="ColorRect" parent="World"]
 offset_left = 210.0
 offset_top = 330.0
@@ -58,7 +65,7 @@ color = Color(0.28, 0.48, 0.62, 1)
 [node name="Hotspots" type="Node2D" parent="World"]
 
 [node name="Mother" type="Area2D" parent="World/Hotspots"]
-position = Vector2(224, 360)
+position = Vector2(214, 402)
 collision_layer = 16
 collision_mask = 1
 script = ExtResource("6_int")
@@ -69,7 +76,7 @@ prompt = "Talk to Mother"
 shape = SubResource("spot")
 
 [node name="Creek" type="Area2D" parent="World/Hotspots"]
-position = Vector2(760, 520)
+position = Vector2(792, 528)
 collision_layer = 16
 collision_mask = 1
 script = ExtResource("6_int")
@@ -80,7 +87,7 @@ prompt = "Look at the creek"
 shape = SubResource("spot")
 
 [node name="Box" type="Area2D" parent="World/Hotspots"]
-position = Vector2(90, 280)
+position = Vector2(118, 392)
 collision_layer = 16
 collision_mask = 1
 script = ExtResource("6_int")
@@ -91,7 +98,7 @@ prompt = "The floorboard she told you not to lift"
 shape = SubResource("spot")
 
 [node name="Road" type="Area2D" parent="World/Hotspots"]
-position = Vector2(860, 240)
+position = Vector2(910, 348)
 collision_layer = 16
 collision_mask = 1
 script = ExtResource("6_int")
