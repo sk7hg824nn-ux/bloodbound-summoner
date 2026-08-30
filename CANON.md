@@ -1,15 +1,19 @@
 # CANON.md — confirmed only
 
 ## Presentation
-Illustrated 2.5D. Layered sprites. Parallax2D stack.
-BACKGROUND → DISTANT → ARCHITECTURE → NPCs → ASH+COMPANIONS → FOREGROUND
-Camera handshake: gameplay → cinematic push → talk → pull back → same room.
+TRUE 2.5D board is the lock.
+100% 2D artwork. 2.5D staging. Real depth. No 3D models. No meshes.
+High-detail illustrated characters on painted environments.
+Layer Z: FarMountains -40 → FarBackground -30 → Buildings -15 → NPCs -5 → Party 0 → ForegroundNpcs 5 → Foreground 12.
+Named camera shots: wide, medium, close, push_in, over_shoulder, dynamic.
+Field HUD: stick left, abilities right, minimap + quest card top-right.
+Talk is portraits, not a bar on black.
 No MeshInstance characters. No pixel-art style as the game look.
 844×390 landscape reference, stretch-expand.
 
 ## Protagonist
 Ash. Timid at the first rites. Knows nothing of Bloodbound, the blood, the fall, why the hall stays empty.
-Academy look: white hair, green streak, green eyes, black coat, green lining.
+Academy look: white hair, green streak, green eyes, black coat, green lining, gold/green filigree.
 Feelings for the three summons are not instant. They grow through travel, danger, trust. He later realizes he loves all three.
 
 ## Summons — three only

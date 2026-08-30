@@ -12,6 +12,8 @@ static func compose(world: Node2D, room: String) -> LayerStack:
 			_overlay_png(stack, "hall")
 		"woods":
 			_overlay_png(stack, "woods")
+		"village":
+			_overlay_png(stack, "village")
 	return stack
 
 static func bind_cut(cut: CutsceneDirector, camera: Camera2DDirector, stack: LayerStack) -> void:
@@ -33,6 +35,8 @@ static func _overlay_png(stack: LayerStack, id: String) -> void:
 	spr.centered = false
 	spr.position = Vector2(-40, 80)
 	spr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	var band := stack.band("Npcs")
+	var band := stack.band("Buildings")
+	if band == null:
+		band = stack.band("Npcs")
 	if band:
 		band.add_child(spr)
