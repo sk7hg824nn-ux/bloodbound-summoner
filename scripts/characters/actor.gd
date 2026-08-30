@@ -28,8 +28,13 @@ func _ready() -> void:
 	figure = field.figure if field else Figure2D.attach(self, figure_kind, body_color)
 	if field:
 		field.set_era(GameState.era)
+		field.play_gait("idle", facing.x < 0.0, global_position.y, facing.y)
 	if label:
 		label.text = display_name
+		label.visible = false
+	var bar = get_node_or_null("HpBar")
+	if bar:
+		bar.visible = false
 	_refresh_hp()
 
 func apply_velocity(dir: Vector2) -> void:
