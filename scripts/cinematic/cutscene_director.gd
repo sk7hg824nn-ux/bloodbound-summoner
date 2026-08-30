@@ -28,7 +28,7 @@ func _ensure_fade() -> void:
 	layer.layer = 80
 	add_child(layer)
 	fade = ColorRect.new()
-	fade.color = Color(0, 0, 0, 1)
+	fade.color = Color(0, 0, 0, 0)
 	fade.set_anchors_preset(Control.PRESET_FULL_RECT)
 	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layer.add_child(fade)
@@ -61,7 +61,7 @@ func _step() -> void:
 	if _i >= _beats.size():
 		_playing = false
 		GameState.in_dialogue = false
-	if stack:
+		if stack:
 			stack.thaw()
 		if camera:
 			camera.directed = false
@@ -125,7 +125,7 @@ func _run(beat: Dictionary) -> void:
 			_react_crowd(String(beat.get("mood", "cheer")))
 			_step()
 		"react_griffin":
-			_react_griffin(String(beat.get("mood", "idle")))
+			_react_griffin(String(beat.get("mood", "fear")))
 			_step()
 		"seal":
 			_seal(bool(beat.get("on", true)), float(beat.get("heat", 1.0)))
@@ -172,16 +172,16 @@ func _spawn_griffin(at: Vector2) -> void:
 	if griffin and is_instance_valid(griffin):
 		griffin.queue_free()
 	griffin = Griffin2D.new()
-	griffin.position = at
 	var root := entities if entities else self
 	root.add_child(griffin)
+	griffin.global_position = at
 
 func _spawn_crowd() -> void:
 	if crowd and is_instance_valid(crowd):
 		return
 	crowd = Node2D.new()
 	crowd.name = "Crowd"
-var root2 := world if world else self
+	var root2: Node = world if world else self
 	root2.add_child(crowd)
 	for i in 10:
 		var fig := Figure2D.new()
@@ -201,19 +201,19 @@ func _react_crowd(mood: String) -> void:
 			var n := c as Node2D
 			var tw := create_tween()
 			var bump := 6.0 if mood == "cheer" or mood == "laugh" else 3.0
-			tw.tween_property(n, "position:y", n.position.y - bump, 0.12)
-			tw.tween_property(n, "position:y", n.position.y, 0.18)
+			var y0 := n.position.y
+			tw.tween_property(n, "position:y", y0 - bump, 0.12)
+			tw.tween_property(n, "position:y", y0, 0.18)
 
 func _react_griffin(mood: String) -> void:
 	if griffin == null:
 		return
-	match mood:
-		"fear":
-			var tw := create_tween()
-			tw.tween_property(griffin, "position", griffin.position + Vector2(36, -8), 0.35)
-			griffin.modulate = Color(1.0, 0.85, 0.85)
-		"idle":
-			griffin.modulate = Color.WHITE
+	if mood == "fear":
+		var tw := create_tween()
+		tw.tween_property(griffin, "global_position", griffin.global_position + Vector2(36, -8), 0.35)
+		griffin.modulate = Color(1.0, 0.85, 0.85)
+	else:
+		griffin.modulate = Color.WHITE
 
 func _seal(on: bool, heat: float) -> void:
 	if world == null:
