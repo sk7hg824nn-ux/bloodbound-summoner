@@ -64,6 +64,8 @@ func set_joystick(dir: Vector2) -> void:
 	joystick_dir = dir
 
 func apply_look(era: String) -> void:
+	if field:
+		field.set_era(era)
 	if figure:
 		figure.apply_look(era)
 
@@ -75,6 +77,8 @@ func try_dodge() -> bool:
 	var dir := joystick_dir
 	dodge_dir = dir.normalized() if dir.length() > 0.1 else facing
 	invuln_time = DODGE_DURATION + 0.05
+	if field:
+		field.play_gait("dodge", facing.x < 0.0, global_position.y, facing.y)
 	if figure:
 		figure.dodge_smear()
 	return true

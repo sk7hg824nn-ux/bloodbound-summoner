@@ -1,45 +1,73 @@
 extends Object
 class_name ArtAsh
-static func tex() -> Texture2D:
-	var raw := Marshalls.base64_to_raw(
-		"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 wNXtbNIz+V/" +
-		"I2m9XD/oYfwGK7/CivkQb0HaK8DTFehvR+C3M0xfsFaPcX7ROWtkVJf2zkvvf1KCtqReNDZ62V1Y/21n90hUieABFAAAAMAZAAAAA" +
-		"CL0mbWRYnVTd9VO3K6JQxJKUWmk01Zp8QPlrfaZhby55porh69OU8Cuhrb1FvsPw8Cr4vLMZgLvFYedOKdtdq8fqVHlfwo9NDL8Rm" +
-		"MpQw0VLooa8rytZI82+y8SyaL3hhczrxjrONKyXPY2BAUPh2G9PAYnMK04YSk6koR1mk0tn6mlPZFJciw6Gq+Oxb4qnFfcKq7hKnL" +
-		"UnFxlHY01Zply0Jv8AwWJXDpF+x5qujeIx2e4mtVtSwzq3u9814L1LTQo08PSVOjTjTpx3RirJAbgAgAAAYMgAAAAAAAAQml6vkjX" +
-		"OrD1Jsg9L3/LKUedZfswKSo6t3yLLlC/htE8wrr4puS+yXqyBrWVJW3tk9BdHoM7fnqbf/P/AEKK8uylz4Fo0Jpfh4us97lGH7v1K" +
-		"wld3ZcNDoauUSl/fWk/okgJ0AEAAAAAAMGTAGQAAAAAAACD0uX8spvlWX7MnCI0qhrZLN/2VIP729QKVW+GKLLVpOOg0E+Sn9ZlZrb" +
-		"4lnr1v+BqfNxjD/2/0KKtxLzotDUyKh/1OT+5SPhg+bRfshSWR4NL/KQo94AIAAAAAAAAAAAAAAAABC6W1+jylU+NWolbwW1+hNEP" +
-		"pVSjUyac5LtU5RlF8ttvUCl1XaKvtkiZxyqUtEMClthUqOUny3tIhJwjGzi1fiiaxkZw0LwblLsus3bkuxFEJfVi77U0X7R6jOhkm" +
-		"GjOV246y8E3dI+f9JCz2Nl70XxVPEZNQhGV50o6sly2sCWABAAAAAAAAAAAAAAAAAIrSioqeR103Ht2j2uN3w8SVKpphiXPF0MIn2" +
-		"Yx6R34t7F9kBVZQa27UWDOa9OejWWUqLT1UnJLhs97kLiLx7Lab8HcsuWZZPEYWmor8NRSvICq05flZK5HmssoxTk4udGpsnFb14r" +
-		"xJvF6JwrUvwakKdRbV2dhFS0czSi7RpKa5wkn+4FyweMoY6gq2GqKcNz5p8mjuV/RjLMdl860sSlCnUStDWu7rjsLAAAAAAAAAAAA" +
-		"AAAAAAAIzN8koZpKNSU5U6sVZSSvdcmiTAFcoaIUFWU8RXlUivyRjq3+ZYYQjTgoQioxWxJcDYAAAAAAAAAAAAAH//Z"
-	)
-	var img := Image.new()
-	if img.load_jpg_from_buffer(raw) != OK:
+## Illustrated Ash field frames.
+## Tries res://art/characters/ash/<name>.png first.
+## Falls back to the packed atlas so Xogot still renders
+## Ash when PNG import is missing.
+
+const Data = preload("res://scripts/art/art_ash_data.gd")
+
+const FRAMES := {
+	"idle_se": Rect2i(1, 1, 109, 256),
+	"idle_front": Rect2i(111, 1, 128, 256),
+	"idle_back": Rect2i(240, 1, 117, 256),
+	"idle_side": Rect2i(358, 1, 111, 256),
+	"walk_se_0": Rect2i(470, 1, 172, 256),
+	"walk_se_1": Rect2i(643, 1, 152, 256),
+	"run_se_0": Rect2i(796, 1, 186, 256),
+	"run_se_1": Rect2i(1, 258, 147, 256),
+	"child_idle_se": Rect2i(149, 258, 134, 200),
+	"face_close": Rect2i(284, 258, 121, 180),
+}
+
+static var _booted: bool = false
+static var _cache = {}
+static var _atlas_img: Image = null
+
+static func tex(name: String = "idle_se") -> Texture2D:
+	if _cache.has(name):
+		return _cache[name]
+	var from_file = _file_tex(name)
+	if from_file != null:
+		_cache[name] = from_file
+		return from_file
+	_ensure_atlas()
+	if _atlas_img == null:
 		return null
-	return ImageTexture.create_from_image(img)
+	if FRAMES.has(name) == false:
+		return null
+	var r: Rect2i = FRAMES[name]
+	var slice := _atlas_img.get_region(r)
+	if slice == null or slice.is_empty():
+		return null
+	var t := ImageTexture.create_from_image(slice)
+	_cache[name] = t
+	return t
+
+static func has_art() -> bool:
+	return tex("idle_se") != null
+
+static func _file_tex(name: String) -> Texture2D:
+	var path := "res://art/characters/ash/%s.png" % name
+	if ResourceLoader.exists(path):
+		var loaded = load(path)
+		if loaded is Texture2D:
+			return loaded
+	if FileAccess.file_exists(path):
+		var img := Image.new()
+		if img.load(path) == OK:
+			return ImageTexture.create_from_image(img)
+	return null
+
+static func _ensure_atlas() -> void:
+	if _booted:
+		return
+	_booted = true
+	var packed := Data.raw()
+	var raw := Marshalls.base64_to_raw(packed)
+	if raw.is_empty():
+		return
+	var img := Image.new()
+	if img.load_png_from_buffer(raw) != OK:
+		return
+	_atlas_img = img

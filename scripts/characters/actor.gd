@@ -46,7 +46,7 @@ func apply_velocity(dir: Vector2) -> void:
 	if field:
 		field.play_gait(gait, left, global_position.y, facing.y)
 		field.tick(get_physics_process_delta_time())
-elif figure:
+	elif figure:
 		figure.set_facing(facing)
 		figure.walking = gait != "idle"
 		figure.gait = gait
