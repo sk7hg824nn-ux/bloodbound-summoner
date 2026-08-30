@@ -11,7 +11,7 @@ var shadow
 var _era = "academy"
 var _pose = ""
 var _last_dir = "se"
-const BASE = 0.42
+const BASE = 0.62
 
 static func attach(host, sheet_name, kind, color):
 	var existing = host.get_node_or_null("Field")
@@ -48,7 +48,7 @@ func _build_shadow() -> void:
 	shadow.name = "Shadow"
 	shadow.color = Color(0, 0, 0, 0.38)
 	shadow.polygon = PackedVector2Array([
-		Vector2(-16, 6), Vector2(16, 6), Vector2(11, 12), Vector2(-11, 12)
+		Vector2(-22, 6), Vector2(22, 6), Vector2(16, 14), Vector2(-16, 14)
 	])
 	shadow.z_index = -2
 	add_child(shadow)
@@ -124,7 +124,10 @@ func _build_sprite() -> void:
 	sprite.sprite_frames = frames
 	sprite.texture_filter = 1
 	sprite.centered = true
-	sprite.offset = Vector2(0, -18)
+	var foot = -18.0
+	if idle0 != null:
+		foot = -float(idle0.get_height()) * 0.48
+	sprite.offset = Vector2(0, foot)
 	sprite.play("idle")
 	add_child(sprite)
 	if figure != null:
