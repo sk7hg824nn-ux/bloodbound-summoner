@@ -1,8 +1,7 @@
 extends RefCounted
 class_name HallArt
 ## Painted Grand Summoning Hall plate.
-## Runtime load only. Never preload the pack — missing pack
-## is a Xogot parser error.
+## Runtime load only. Never preload the pack.
 
 static var _cache
 
@@ -49,14 +48,20 @@ static func _file_tex():
 	return null
 
 static func _packed() -> String:
-	var path = "res://scripts/art/art_hall_data.gd"
-	if ResourceLoader.exists(path) == false:
-		return ""
-	var scr = load(path)
-	if scr == null:
-		return ""
-	if scr.has_method("plate"):
-		return str(scr.plate())
+	var paths = [
+		"res://scripts/art/art_hall_mid.gd",
+		"res://scripts/art/art_hall_data.gd",
+	]
+	var i = 0
+	while i < paths.size():
+		var path = paths[i]
+		if ResourceLoader.exists(path):
+			var scr = load(path)
+			if scr != null and scr.has_method("plate"):
+				var s = str(scr.plate())
+				if s != "":
+					return s
+		i += 1
 	return ""
 
 static func _fallback():
