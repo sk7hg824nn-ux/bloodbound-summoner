@@ -153,8 +153,7 @@ func _draw_rite(at: Vector2) -> void:
 	var pts := PackedVector2Array()
 	for i in 28:
 		var a := TAU * float(i) / 28.0
-		pts.append(at + Vector2(cos(a), sin(a) * 38.0)
-)
+		pts.append(at + Vector2(cos(a), sin(a)) * 38.0)
 	pts.append(pts[0])
 	line.points = pts
 	$World.add_child(line)
