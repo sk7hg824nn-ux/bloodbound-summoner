@@ -39,6 +39,7 @@ func play(beats: Array) -> void:
 	_playing = true
 	_busy = false
 	GameState.in_dialogue = true
+	GameState.in_cutscene = true
 	if stack:
 		stack.freeze()
 	if camera:
@@ -49,24 +50,30 @@ func abort() -> void:
 	_playing = false
 	_busy = false
 	GameState.in_dialogue = false
+	GameState.in_cutscene = false
 	if stack:
 		stack.thaw()
 	if camera:
 		camera.directed = false
 		camera.set_mode(Camera2DDirector.Mode.EXPLORE)
 
+func _end() -> void:
+	_playing = false
+	_busy = false
+	GameState.in_dialogue = false
+	GameState.in_cutscene = false
+	if stack:
+		stack.thaw()
+	if camera:
+		camera.directed = false
+		camera.set_mode(Camera2DDirector.Mode.EXPLORE)
+	finished.emit()
+
 func _step() -> void:
 	if not _playing or _busy:
 		return
 	if _i >= _beats.size():
-		_playing = false
-		GameState.in_dialogue = false
-		if stack:
-			stack.thaw()
-		if camera:
-			camera.directed = false
-			camera.set_mode(Camera2DDirector.Mode.EXPLORE)
-		finished.emit()
+		_end()
 		return
 	var beat: Dictionary = _beats[_i]
 	_i += 1
@@ -76,9 +83,9 @@ func _run(beat: Dictionary) -> void:
 	match String(beat.get("type", "say")):
 		"lock":
 			GameState.in_dialogue = true
+			GameState.in_cutscene = true
 			_step()
 		"unlock":
-			GameState.in_dialogue = false
 			_step()
 		"wait":
 			_busy = true
