@@ -1,5 +1,13 @@
 extends Node2D
 
+const WolfScript = preload("res://scripts/combat/wolf_summon.gd")
+const AkariScript = preload("res://scripts/characters/akari.gd")
+const RingScript = preload("res://scripts/combat/pact_ring.gd")
+const SpotScript = preload("res://scripts/world/interactable.gd")
+const CutScript = preload("res://scripts/cinematic/cutscene_director.gd")
+const ExamScript = preload("res://scripts/story/exam_cinematic.gd")
+const WorldScript = preload("res://scripts/world/world_25.gd")
+
 @onready var player = $Entities/Player
 @onready var touch = $TouchControls
 @onready var camera = $CameraDirector
@@ -27,10 +35,10 @@ func _ready() -> void:
 	camera.set_target(player)
 	camera.set_mode(0)
 	_fence_yard()
-	_stack = World25.compose($World, "hall")
+	_stack = WorldScript.compose($World, "hall")
 	_spots()
-	_cut = CutsceneDirector.new()
-	World25.bind_cut(_cut, camera, _stack)
+	_cut = CutScript.new()
+	WorldScript.bind_cut(_cut, camera, _stack)
 	_cut.actor = player
 	_cut.world = $World
 	_cut.entities = $Entities
@@ -49,7 +57,7 @@ func _ready() -> void:
 	_objective()
 	if GameState.has_flag("exam_failed") == false and PactSystem.is_pacted("kitsune") == false:
 		player.global_position = Vector2(200, 430)
-		_cut.play(ExamCinematic.beats(GameState.player_name))
+		_cut.play(ExamScript.beats(GameState.player_name))
 
 func _objective() -> void:
 	if PactSystem.is_pacted("kitsune"):
@@ -67,7 +75,7 @@ func _spots() -> void:
 	_make_spot("ring", "Beginner Ring", "Sand. Later.", Vector2(900, 470))
 
 func _make_spot(id, title, prompt, pos) -> void:
-	var spot = Interactable.new()
+	var spot = SpotScript.new()
 	spot.interact_id = id
 	spot.title = title
 	spot.prompt = prompt
@@ -101,7 +109,7 @@ func _interact() -> void:
 			EventBus.toast.emit("They already wrote insufficient.")
 		else:
 			player.global_position = Vector2(200, 430)
-			_cut.play(ExamCinematic.beats(GameState.player_name))
+			_cut.play(ExamScript.beats(GameState.player_name))
 	elif id == "woods":
 		if PactSystem.is_pacted("kitsune"):
 			EventBus.toast.emit("The sand is east.")
@@ -165,7 +173,7 @@ func _begin_ambush() -> void:
 	_in_ambush = true
 	_strike_t = 0.55
 	camera.set_mode(1)
-	ambush = WolfSummon.new()
+	ambush = WolfScript.new()
 	ambush.display_name = "Whelp"
 	$Entities.add_child(ambush)
 	ambush.global_position = player.global_position + Vector2(80, -8)
@@ -186,7 +194,7 @@ func _resolve_arrival() -> void:
 func _spawn_akari() -> void:
 	if akari != null and is_instance_valid(akari):
 		return
-	akari = Akari.new()
+	akari = AkariScript.new()
 	$Entities.add_child(akari)
 	akari.global_position = player.global_position + Vector2(-36, 6)
 
@@ -194,10 +202,10 @@ func _start_ring() -> void:
 	_in_ring = true
 	GameState.in_combat = true
 	camera.set_mode(1)
-	wolf = WolfSummon.new()
+	wolf = WolfScript.new()
 	$Entities.add_child(wolf)
 	wolf.global_position = Vector2(980, 500)
-	ring = PactRing.new()
+	ring = RingScript.new()
 	add_child(ring)
 	ring.bind(player, akari, wolf)
 	EventBus.combat_started.emit("beginner")
