@@ -14,6 +14,7 @@ var _in_ambush := false
 var _waiting_walk := false
 var _walk_from := Vector2.ZERO
 var _strike_t := 0.0
+var _cut: CutsceneDirector
 
 func _ready() -> void:
 	GameState.era = "academy"
@@ -26,6 +27,10 @@ func _ready() -> void:
 	camera.set_mode(Camera2DDirector.Mode.EXPLORE)
 	_fence_yard()
 	_spots()
+	_cut = CutsceneDirector.new()
+	_cut.camera = camera
+	add_child(_cut)
+	_cut.finished.connect(_on_exam_done)
 	touch.joystick_moved.connect(player.set_joystick)
 	touch.interact_pressed.connect(_interact)
 	player.interact_pressed.connect(_interact)
@@ -36,7 +41,7 @@ func _ready() -> void:
 	EventBus.combat_ended.connect(_on_combat_ended)
 	if PactSystem.is_pacted("kitsune"):
 		_spawn_akari()
-	EventBus.toast.emit("The circle first. Everyone is watching.")
+	EventBus.toast.emit("The hall first. Bleachers. Watch someone else succeed.")
 	_objective()
 
 func _objective() -> void:
@@ -47,10 +52,10 @@ func _objective() -> void:
 	elif GameState.has_flag("exam_failed"):
 		Campaign.set_objective("A week of being the joke.")
 	else:
-		Campaign.set_objective("The examination rite. In front of everyone.")
+		Campaign.set_objective("The examination hall. Watch the rite before you step in.")
 
 func _spots() -> void:
-	_make_spot("circle", "Examination Circle", "Step in.", Vector2(480, 420))
+	_make_spot("circle", "Summoning Hall", "The bleachers are full.", Vector2(480, 420))
 	_make_spot("woods", "The Woods", "Leave their eyes.", Vector2(80, 430))
 	_make_spot("ring", "Beginner Ring", "Sand. Later.", Vector2(900, 470))
 
@@ -88,7 +93,7 @@ func _interact() -> void:
 			if GameState.has_flag("exam_failed"):
 				EventBus.toast.emit("They already wrote insufficient.")
 			else:
-				_say(FirstSummon.circle_open(GameState.player_name))
+				_cut.play(ExamCutscene.beats(GameState.player_name))
 		"woods":
 			if PactSystem.is_pacted("kitsune"):
 				_say({"speaker": "Akari", "lines": ["\"You already almost died. The sand is that way if you insist on repeating it.\""], "choices": []})
@@ -97,24 +102,24 @@ func _interact() -> void:
 			elif GameState.has_flag("exam_failed"):
 				EventBus.toast.emit("Not today. A week.")
 			else:
-				EventBus.toast.emit("Not yet. They are still watching the circle.")
+				EventBus.toast.emit("Not yet. The hall is still watching.")
 		"ring":
 			if not PactSystem.is_pacted("kitsune"):
 				EventBus.toast.emit("You have no pact.")
 			else:
 				_start_ring()
 
+func _on_exam_done() -> void:
+	GameState.set_flag("exam_failed")
+	camera.set_mode(Camera2DDirector.Mode.EXPLORE)
+	_say(FirstSummon.week_later())
+	_objective()
+
 func _say(pack: Dictionary) -> void:
 	EventBus.dialogue_requested.emit(pack["speaker"], pack["lines"], pack.get("choices", []))
 
 func _on_choice(choice_id: String) -> void:
 	match choice_id:
-		"ex_try":
-			GameState.set_flag("exam_failed")
-			_say(FirstSummon.circle_fail())
-			_objective()
-		"ex_leave":
-			_say(FirstSummon.week_later())
 		"wk_ok":
 			GameState.set_flag("week_later")
 			_objective()
