@@ -24,7 +24,7 @@ func _refresh() -> void:
 	var n := name_edit.text.strip_edges()
 	if n.is_empty():
 		n = "Ash"
-	preview.text = "%s  •  %s\nA small house. A mother who loves you." % [n, "Male" if _sex == GameState.Sex.MALE else "Female"]
+	preview.text = "%s  •  %s\nHe will not be told who he is." % [n, "Male" if _sex == GameState.Sex.MALE else "Female"]
 
 func _process(_delta: float) -> void:
 	_refresh()
@@ -38,4 +38,4 @@ func _enter() -> void:
 	Campaign.reset()
 	Bricks.reset()
 	GameState.set_identity(n, _sex)
-	get_tree().change_scene_to_file("res://scenes/world/Childhood.tscn")
+	get_tree().change_scene_to_file("res://scenes/world/Prologue.tscn")
