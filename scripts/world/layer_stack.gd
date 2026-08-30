@@ -53,11 +53,11 @@ func dress_hall() -> void:
 	spr.centered = false
 	spr.position = Vector2(-40, 80)
 	spr.scale = Vector2(1.28, 0.92)
-	var arch := band("Architecture")
-	if arch:
-		arch.add_child(spr)
-	_plate(band("Foreground"), Rect2(-10, 140, 22, 260), Color(0.10, 0.06, 0.06, 0.65))
-	_plate(band("Foreground"), Rect2(1180, 160, 20, 240), Color(0.10, 0.06, 0.06, 0.65))
+	var floor := band("Npcs")
+	if floor:
+		floor.add_child(spr)
+	_plate(band("Foreground"), Rect2(-10, 140, 22, 260), Color(0.22, 0.12, 0.12, 0.7))
+	_plate(band("Foreground"), Rect2(1180, 160, 20, 240), Color(0.22, 0.12, 0.12, 0.7))
 
 func _plate(root: Node2D, r: Rect2, color: Color) -> void:
 	if root == null:

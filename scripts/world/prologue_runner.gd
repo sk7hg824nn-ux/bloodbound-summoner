@@ -5,11 +5,12 @@ func _ready() -> void:
 	GameState.change_location("before")
 	Campaign.set_objective("He will not be told who he is.")
 	var plate := Sprite2D.new()
+	plate.name = "Plate"
 	plate.centered = false
 	plate.position = Vector2.ZERO
+	plate.z_index = 2
 	plate.texture = OriginArt.tex("castle")
 	add_child(plate)
-	move_child(plate, 0)
 	var cut := CutsceneDirector.new()
 	cut.plate = plate
 	add_child(cut)
