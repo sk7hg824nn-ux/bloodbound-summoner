@@ -9,14 +9,13 @@ static func compose(world: Node2D, room: String) -> LayerStack:
 	match room:
 		"hall":
 			stack.dress_hall()
-			_overlay_png(stack, "hall")
 		"woods":
 			_overlay_png(stack, "woods")
 		"village":
 			_overlay_png(stack, "village")
 	return stack
 
-static func bind_cut(cut: CutsceneDirector, camera: Camera2DDirector, stack: LayerStack) -> void:
+static func bind_cut(cut, camera, stack: LayerStack) -> void:
 	cut.camera = camera
 	cut.stack = stack
 
@@ -28,13 +27,13 @@ static func still(id: String) -> Texture2D:
 
 static func _overlay_png(stack: LayerStack, id: String) -> void:
 	var path := PLATE_DIR + id + ".png"
-	if not ResourceLoader.exists(path):
+	if ResourceLoader.exists(path) == false:
 		return
 	var spr := Sprite2D.new()
 	spr.texture = load(path)
 	spr.centered = false
 	spr.position = Vector2(-40, 80)
-	spr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	spr.texture_filter = 1
 	var band := stack.band("Buildings")
 	if band == null:
 		band = stack.band("Npcs")

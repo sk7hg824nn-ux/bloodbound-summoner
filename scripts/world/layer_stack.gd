@@ -57,10 +57,15 @@ func dress_hall() -> void:
 		for c in world.get_children():
 			if c is ColorRect:
 				c.visible = false
-	var host := band("Buildings")
-	if host == null:
-		host = band("Npcs")
-	HallArt.mount(host)
+		var root = world.get_parent()
+		if root:
+			var sky = root.get_node_or_null("ParallaxBackground")
+			if sky:
+				sky.visible = false
+	HallLayers.mount(band("FarBackground"), "far", Vector2(-80, -40), Vector2(1.22, 1.05))
+	HallArt.mount(band("Buildings"))
+	HallLayers.mount(band("Npcs"), "crowd", Vector2(-60, 70), Vector2(1.18, 1.08))
+	HallLayers.mount(band("Foreground"), "fore", Vector2(-90, -10), Vector2(1.28, 1.18))
 
 func _plate(root: Node2D, r: Rect2, color: Color) -> void:
 	if root == null:

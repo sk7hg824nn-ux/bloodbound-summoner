@@ -89,6 +89,12 @@ func _build_sprite() -> void:
 			while g < gaits.size():
 				var gait = gaits[g]
 				var clip = ArtAsh.clip(dir_name, gait)
+				if clip.is_empty() and gait != "idle":
+					clip = ArtAsh.clip(dir_name, "idle")
+				if clip.is_empty():
+					clip = ArtAsh.clip("three_quarter_front", gait)
+				if clip.is_empty():
+					clip = ArtAsh.clip("three_quarter_front", "idle")
 				var an = _anim_name(gait, dir_name)
 				frames.add_animation(an)
 				frames.set_animation_loop(an, true)
