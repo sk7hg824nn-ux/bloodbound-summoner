@@ -2,6 +2,10 @@
 
 Reference locked 2026-08-30. Academy look. Not childhood.
 
+Master sheet spec: `docs/ASH_MASTER_SHEET.md`.
+Production bible: `docs/ART_PRODUCTION_BIBLE.md`.
+Do not replace these field plates. New work fills child / portrait gaps from the same DNA.
+
 ## Sheet facts
 - Height 6'3". Age 19. Lean / athletic.
 - White hair, green tips. Green eyes.
