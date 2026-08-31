@@ -11,6 +11,7 @@ static func compose(world: Node2D, room: String) -> LayerStack:
 			stack.dress_hall()
 			_overlay_png(stack, "hall")
 		"woods":
+			stack.dress_woods()
 			_overlay_png(stack, "woods")
 		"village", "yard", "town":
 			stack.dress_town()
