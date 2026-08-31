@@ -1,29 +1,35 @@
 extends Node
-## Slots 0..2 at user://bloodbound_slot_N.json  schema v1
-const VERSION := 1
+## Slots 0..2 at user://bloodbound_slot_N.json  schema v2
+const VERSION := 2
 const SLOT_COUNT := 3
 const LEGACY := "user://bloodbound_save.json"
 const INDEX := "user://bloodbound_index.json"
 
 var current_slot: int = 0
 
+
 func _ready() -> void:
 	_migrate_legacy()
 	current_slot = _read_index()
 	EventBus.pact_formed.connect(func(_id): write())
 	EventBus.combat_ended.connect(func(_w): write())
+	EventBus.relationship_changed.connect(func(_a, _b, _c): write())
+
 
 func slot_path(slot: int) -> String:
 	return "user://bloodbound_slot_%d.json" % slot
 
+
 func has_slot(slot: int) -> bool:
 	return FileAccess.file_exists(slot_path(slot))
+
 
 func has_save() -> bool:
 	for i in SLOT_COUNT:
 		if has_slot(i):
 			return true
 	return false
+
 
 func peek(slot: int) -> Dictionary:
 	if not has_slot(slot):
@@ -35,6 +41,7 @@ func peek(slot: int) -> Dictionary:
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return {}
 	return parsed as Dictionary
+
 
 func write() -> void:
 	var blob := {
@@ -51,6 +58,7 @@ func write() -> void:
 		"pacted": PactSystem.pacted.duplicate(true),
 		"bonds": PactSystem.bonds.duplicate(true),
 		"tails": PactSystem.tails.duplicate(true),
+		"relationships": Relationships.snapshot(),
 		"chapter_id": Campaign.chapter_id,
 		"objective": Campaign.objective,
 	}
@@ -59,6 +67,7 @@ func write() -> void:
 		return
 	f.store_string(JSON.stringify(blob))
 	_write_index(current_slot)
+
 
 func load_slot(slot: int) -> bool:
 	if slot < 0 or slot >= SLOT_COUNT:
@@ -69,21 +78,26 @@ func load_slot(slot: int) -> bool:
 	_write_index(slot)
 	return _apply(peek(slot))
 
+
 func load_save() -> bool:
 	return load_slot(current_slot) or load_slot(_first_used())
 
+
 func clear() -> void:
 	clear_slot(current_slot)
+
 
 func clear_slot(slot: int) -> void:
 	var p := slot_path(slot)
 	if FileAccess.file_exists(p):
 		DirAccess.remove_absolute(p)
 
+
 func continue_scene() -> String:
 	if GameState.has_flag("prologue_done") or GameState.era == "academy":
 		return "res://scenes/world/Academy.tscn"
 	return "res://scenes/world/Prologue.tscn"
+
 
 func _apply(blob: Dictionary) -> bool:
 	if blob.is_empty():
@@ -101,15 +115,22 @@ func _apply(blob: Dictionary) -> bool:
 	PactSystem.pacted = blob.get("pacted", PactSystem.pacted) as Dictionary
 	PactSystem.bonds = blob.get("bonds", PactSystem.bonds) as Dictionary
 	PactSystem.tails = blob.get("tails", PactSystem.tails) as Dictionary
+	var rel_raw: Variant = blob.get("relationships", {})
+	if typeof(rel_raw) == TYPE_DICTIONARY:
+		Relationships.restore(rel_raw as Dictionary)
+	else:
+		Relationships.reset()
 	Campaign.chapter_id = str(blob.get("chapter_id", Campaign.chapter_id))
 	Campaign.objective = str(blob.get("objective", Campaign.objective))
 	return true
+
 
 func _first_used() -> int:
 	for i in SLOT_COUNT:
 		if has_slot(i):
 			return i
 	return 0
+
 
 func _migrate_legacy() -> void:
 	if not FileAccess.file_exists(LEGACY):
@@ -121,6 +142,7 @@ func _migrate_legacy() -> void:
 	if src and dst:
 		dst.store_string(src.get_as_text())
 
+
 func _read_index() -> int:
 	if not FileAccess.file_exists(INDEX):
 		return 0
@@ -131,6 +153,7 @@ func _read_index() -> int:
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return 0
 	return clampi(int((parsed as Dictionary).get("last", 0)), 0, SLOT_COUNT - 1)
+
 
 func _write_index(slot: int) -> void:
 	var f := FileAccess.open(INDEX, FileAccess.WRITE)
