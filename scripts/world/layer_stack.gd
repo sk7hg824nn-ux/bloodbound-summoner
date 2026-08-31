@@ -52,20 +52,38 @@ func thaw() -> void:
 			(c as Parallax2D).ignore_camera_scroll = false
 
 func dress_hall() -> void:
-	var world := get_parent()
-	if world:
-		for c in world.get_children():
-			if c is ColorRect:
-				c.visible = false
-		var root = world.get_parent()
-		if root:
-			var sky = root.get_node_or_null("ParallaxBackground")
-			if sky:
-				sky.visible = false
+	_hide_blockout()
+	if AcademyLayers.available():
+		AcademyLayers.mount(band("FarMountains"), "sky", Vector2(-160, -220), Vector2(1.18, 1.05))
+		AcademyLayers.mount(band("FarBackground"), "far", Vector2(-120, -40), Vector2(1.22, 1.02))
+		AcademyLayers.mount(band("Buildings"), "buildings", Vector2(-80, 20), Vector2(1.08, 0.92))
+		AcademyLayers.mount(band("Foreground"), "fore", Vector2(-100, 40), Vector2(1.20, 1.05))
+		return
 	HallLayers.mount(band("FarBackground"), "far", Vector2(-80, -40), Vector2(1.22, 1.05))
 	HallArt.mount(band("Buildings"))
 	HallLayers.mount(band("Npcs"), "crowd", Vector2(-60, 70), Vector2(1.18, 1.08))
 	HallLayers.mount(band("Foreground"), "fore", Vector2(-90, -10), Vector2(1.28, 1.18))
+
+func dress_woods() -> void:
+	_hide_blockout()
+	var path = "res://art/plates/woods_mid.jpg"
+	if FileAccess.file_exists(path) == false:
+		path = "res://art/plates/woods.jpg"
+	if FileAccess.file_exists(path) == false:
+		return
+	var img = Image.new()
+	if img.load(path) != OK:
+		return
+	var spr = Sprite2D.new()
+	spr.name = "Woods_mid"
+	spr.texture = ImageTexture.create_from_image(img)
+	spr.centered = false
+	spr.texture_filter = 1
+	spr.position = Vector2(-80, -20)
+	spr.scale = Vector2(1.12, 1.02)
+	var mid = band("Buildings")
+	if mid:
+		mid.add_child(spr)
 
 func dress_town() -> void:
 	_hide_blockout()
@@ -88,12 +106,3 @@ func _hide_blockout() -> void:
 		var sky = root.get_node_or_null("ParallaxBackground")
 		if sky:
 			sky.visible = false
-
-func _plate(root: Node2D, r: Rect2, color: Color) -> void:
-	if root == null:
-		return
-	var n := ColorRect.new()
-	n.position = r.position
-	n.size = r.size
-	n.color = color
-	root.add_child(n)
