@@ -96,7 +96,7 @@ func clear_slot(slot: int) -> void:
 func continue_scene() -> String:
 	if GameState.has_flag("prologue_done") or GameState.era == "academy":
 		return "res://scenes/world/Academy.tscn"
-	return "res://scenes/world/Prologue.tscn"
+	return "res://scenes/world/Childhood.tscn"
 
 
 func _apply(blob: Dictionary) -> bool:

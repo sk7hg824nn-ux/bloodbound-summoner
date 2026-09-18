@@ -24,7 +24,8 @@ func _refresh() -> void:
 	var n := name_edit.text.strip_edges()
 	if n.is_empty():
 		n = "Ash"
-	preview.text = "%s  •  %s\nSlot %d. He will not be told who he is." % [n, "Male" if _sex == GameState.Sex.MALE else "Female", SaveSystem.current_slot + 1]
+	var who := "He" if _sex == GameState.Sex.MALE else "She"
+	preview.text = "%s  •  %s\nSlot %d. %s will not be told who %s is." % [n, "Male" if _sex == GameState.Sex.MALE else "Female", SaveSystem.current_slot + 1, who, "he" if _sex == GameState.Sex.MALE else "she"]
 
 func _process(_delta: float) -> void:
 	_refresh()
@@ -37,5 +38,8 @@ func _enter() -> void:
 	Campaign.reset()
 	Bricks.reset()
 	GameState.set_identity(n, _sex)
+	GameState.era = "child"
+	GameState.change_location("home")
 	SaveSystem.clear_slot(SaveSystem.current_slot)
-	get_tree().change_scene_to_file("res://scenes/world/Prologue.tscn")
+	SaveSystem.write()
+	get_tree().change_scene_to_file("res://scenes/world/Childhood.tscn")

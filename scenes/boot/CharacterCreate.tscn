@@ -76,4 +76,4 @@ autowrap_mode = 3
 [node name="Enter" type="Button" parent="Panel"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "Enter the Academy"
+text = "Go home"

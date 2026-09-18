@@ -1,5 +1,11 @@
 # CHANGELOG.md
 
+## 2026-09-18
+- Create now opens the playable Childhood yard (the scene the README promised).
+- Continue on a childhood save returns to Childhood, not the cinematic skip.
+- Childhood writes the save before it leaves for Academy.
+- Keyboard bindings: WASD/arrows, E interact, Space dodge, J attack, K pact.
+
 ## 2026-08-30
 - TRUE 2.5D board locked as the presentation standard.
 - LayerStack now uses the board Z bands: -40 / -30 / -15 / -5 / 0 / 5 / 12.
