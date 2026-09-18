@@ -165,6 +165,7 @@ func _on_choice(choice_id: String) -> void:
 			GameState.era = "academy"
 			GameState.inventory = ["Academy Uniform", "Empty Summoning Focus"]
 			GameState.location = "courtyard"
+			SaveSystem.write()
 			get_tree().change_scene_to_file("res://scenes/world/Academy.tscn")
 
 
