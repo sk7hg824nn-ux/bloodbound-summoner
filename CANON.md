@@ -53,3 +53,7 @@ Ash can hold three SSS-potential summons. They still start at E.
 
 ## Hierarchy
 story → character → world → gameplay → code
+
+## Rin
+Ash's childhood friend from the outskirts; daughter of Torin and Maren; same age as Ash.
+Summon: Coral, Rank A sea serpent (leviathan type). Answers in the grand hall right before Ash's empty circle. Lives in the Mere. Rin wins the Tidewater Cup (water bracket) in Year One. Full sheet: docs/RIN.md.
